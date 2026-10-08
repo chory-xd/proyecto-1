@@ -21,7 +21,7 @@
 
         <article>
           <h3>Pan marraqueta</h3>
-          <p>Por unidad o por docena.</p>
+          <p>Por unidad o por mayor.</p>
         </article>
 
         <article>
@@ -34,12 +34,107 @@
       <section id="horarios">
         <h2>Horarios</h2>
         <p>domingo a viernes, de 16:00 a 18:00 </p>
+        <table>
+          <caption>Precios por producto y disponibilidad</caption>
+          <thead>
+            <tr>
+              <th scope="col">Producto</th>
+              <th scope="col">Precio</th>
+              <th scope="col">Disponible</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Pan del día</td>   <td>Bs 0.80</td>  <td>Todos los días</td></tr>
+            <tr><td>Pan empandas</td>  <td>Bs 1.50</td>  <td>solo domigos</td></tr>
+            <tr><td>hornaje de carnes</td>  <td>Bs 20</td> <td>avisar anticipdamente</td></tr>
+          </tbody>
+        </table>
+        <figure>
+          <img src="panadero.jpg.jpeg"
+               alt="Te da lo mejor de dos mundos: por un lado, tienes la enorme inercia térmica y el calor envolvente de los materiales pesados 
+               (que ayudan muchísimo a que el pan crezca y quede con una corteza perfecta); y por el otro, tienes la comodidad, limpieza y control exacto
+                de la temperatura que te da el quemador de gas, sin tener que estar pendiente de la leña."
+               width="500" height="500">
+          <figcaption>el pan por la tarde es mejor queda muy fresco.</figcaption>
+        </figure>
+       <section id="pedido">
+        <h2>Hacer un pedido</h2>
+
+        <form action="/pedido" method="post">
+
+          <fieldset>
+            <legend>Tus datos</legend>
+
+            <p>
+              <label for="nombre">Nombre completo</label>
+              <!-- autocomplete deja que el navegador ofrezca datos ya guardados.
+                   required hace que el navegador impida enviar el campo vacío. -->
+              <input type="text" id="nombre" name="nombre"
+                     autocomplete="name" required>
+            </p>
+
+            <p>
+              <label for="email">Correo electrónico</label>
+              <input type="email" id="email" name="email"
+                     autocomplete="email" required>
+            </p>
+
+            <p>
+              <label for="telefono">Teléfono</label>
+              <!-- pattern valida con una expresión regular: aquí, de 7 a 8 dígitos.
+                   El title es el mensaje que el navegador muestra si no cumple.
+                   Sin title, el aviso de error no dice qué se espera. -->
+              <input type="tel" id="telefono" name="telefono"
+                     autocomplete="tel" pattern="[0-9]{7,8}"
+                     title="7 u 8 dígitos, sin espacios">
+            </p>
+          </fieldset>
+
+          <fieldset>
+            <legend>Tu pedido</legend>
+
+            <p>
+              <label for="producto">Producto</label>
+              
+              <select id="producto" name="producto" required>
+                <option value="">Elige uno</option>
+                <option value="dia">Pan del día</option>
+                <option value="integral">empandas</option>
+                <option value="molde">horneaje de carnes</option>
+              </select>
+            </p>
+
+            <p>
+              <label for="cantidad">Cantidad</label>
+              <input type="number" id="cantidad" name="cantidad"
+                     min="1" max="100" value="1" required>
+            </p>
+
+            <p>
+              <label for="fecha">Fecha de entrega</label>
+              <input type="date" id="fecha" name="fecha" required>
+            </p>
+
+            <p>
+              <label for="notas">Alguna indicación</label>
+              <textarea id="notas" name="notas" rows="3"></textarea>
+            </p>
+
+            <p>
+              
+              <input type="checkbox" id="terminos" name="terminos" required>
+              <label for="terminos">Acepto que el pedido se confirma por teléfono</label>
+            </p>
+          </fieldset>
+          <button type="submit">Enviar pedido</button>
+        </form>
+      </section>
       </section>
 
     </main>
     <aside>
       <h2>¿Sabías?</h2>
-      <p>los pones son artesanales no utikizamos productos de cresimiento para el pan </p>
+      <p>Nuestro producto son artesanales no utilizamos productos de cresimiento para el pan como puede ser el mejorantes de pan </p>
     </aside>
     <footer id="contacto">
       <h2>Contacto</h2>
@@ -53,4 +148,5 @@
 
   </body>
 </html>
+
  
