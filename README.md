@@ -1,38 +1,85 @@
-#panaderia largucho
+# Panadería Largucho
 
-**estudiante:** rodrigo mamani mamani
+**Estudiante:** Rodrigo Mamani Mamani  
+**Cliente:** Microempresa de Panadería  
+**URL publicada:**  
 
-**cliente:** micro empresa de panaderia
+---
 
-**URL publicada:**
+## ¿Qué resuelve el proyecto?
+El sitio web soluciona un problema crítico de control de inventario y previsión de la demanda en la panadería. En ocasiones, clientes casuales o eventuales compran grandes cantidades de pan sin previo aviso, lo que genera desabastecimiento y provoca que los clientes habituales se queden sin producto.
 
+A través de esta plataforma web se implementa un sistema de reservas anticipadas. Esto permite a los clientes programar sus pedidos con antelación, garantizando su abastecimiento. Al mismo tiempo, optimiza la producción del horno artesanal, permitiendo calcular con precisión la cantidad exacta de pan que se debe hornear cada día para reducir el desperdicio de materia prima y asegurar la máxima frescura.
 
-##Que resuelve
-El sitio web soluciona un problema crítico de control de inventario y previsión de la demanda en la panadería. En ocasiones, clientes casuales o eventuales compran grandes cantidades de pan sin previo aviso, lo que genera desabastecimiento y provoca que los clientes habituales y constantes se queden sin el producto. 
+---
 
-A través de esta plataforma web, se implementa un sistema de reservas anticipadas. Esto permite a los clientes programar sus pedidos con unos días de antelación, garantizando su abastecimiento. Al mismo tiempo, optimiza la producción del horno, permitiendo calcular con precisión la cantidad exacta de pan que se debe hornear cada día para reducir el desperdicio de materia prima y asegurar la frescura del producto. 
+## Estructura y Arquitectura del Proyecto
 
-##como esta construido
+El proyecto está organizado de manera modular en HTML5, CSS3 y JavaScript moderno (ES6+) con integración de jQuery y peticiones asíncronas:
 
-**semantica:**
+```
+panaderia/
+│
+├── index.html              # Estructura semántica completa de la página web
+├── estilos.css             # Estilos y diseño responsivo (CSS moderno y variables)
+├── datos.json              # Base de datos en formato JSON para consumo asíncrono
+│
+├── app.js                  # Inicialización y variables fundamentales del negocio
+├── datos.js                # Catálogo de datos locales en JS, clases y métodos funcionales
+├── funciones.js            # Funciones puras, arrow functions, scope y closures
+├── render.js               # Renderizado dinámico de tarjetas de productos en el DOM
+├── eventos.js              # Manejo de eventos: buscador en vivo, filtros y validación
+│
+├── jquery-3.7.1.min.js     # Librería jQuery para animaciones y utilidades
+├── jquery-panel.js         # Menú móvil deslizable, acordeón interactivo y avisos
+├── jquery-comparado.js     # Demostración comparativa de Vanilla JS vs jQuery
+├── remoto.js               # Carga asíncrona de datos vía Fetch (async/await) y AJAX
+│
+├── logo.png                # Logotipo oficial de Panadería Largucho
+├── panadero.jpg.jpeg       # Fotografía del horno artesanal
+└── capturas*.png           # Capturas de pantalla de la interfaz
+```
 
- El proyecto se estructuró utilizando etiquetas semánticas nativas de HTML para dar un orden jerárquico correcto a la panadería. Se usó `<header>` para la cabecera principal, `<nav>` junto con `<ul>` y `<li>` para estructurar de forma limpia el menú de navegación, `<main>` para agrupar todo el bloque de contenido central, `<section>` para separar las áreas de productos, horarios y formularios de pedidos, `<article>` para aislar de forma independiente cada variedad de pan, `<aside>` para el dato curioso complementario ("¿Sabías?") y `<footer>` con la etiqueta `<address>` para ordenar los datos de contacto y ubicación de la empresa.
+---
 
-**layout:**
+## Cómo está construido
 
-La estructura del sitio se organizó combinando técnicas modernas de alineación. En la cabecera (`<header>`) se utilizó CSS Flexbox con la propiedad `justify-content: space-between` para empujar de forma limpia el bloque de navegación hacia la izquierda y el logotipo hacia el extremo derecho. Para la sección de productos (`#productos`), se implementó una rejilla bidimensional con CSS Grid usando `grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr))` y variables personalizadas (`gap: var(--espacio)`), lo que permite que las tarjetas de pan se acomoden automáticamente una al lado de la otra y se adapten de forma completamente responsiva al tamaño de cualquier pantalla.
+### 1. Semántica HTML5
+- **`<header>`**: Encabezado principal que contiene el título del negocio, slogan, logotipo y menú de navegación.
+- **`<nav>`**: Navegación principal accesible tanto en versión escritorio como en versión móvil (`#menu-toggle` y `#menu-movil`).
+- **`<main>`**: Agrupa las secciones centrales organizadas con `<section>`, `<article>`, `<figure>`, `<table>` y `<aside>`.
+- **`<form>`**: Formulario de pedidos con validación semántica de campos (nombre, correo, teléfono boliviano, fecha de entrega y términos).
+- **`<footer>` y `<address>`**: Información de contacto y ubicación de la panadería en Provincia Aroma, Colquencha.
 
-**diseño:**
+### 2. Diseño y Maquetación CSS3
+- **Paleta de colores cálida:**
+  - `#f1b959`: Color dorado principal, usado en acentos, títulos y botones.
+  - `#171616`: Color de contraste profundo para textos destacados y estados activos.
+  - `#FAF7F2`: Fondo crema suave que evoca la harina y el calor de la masa horneada.
+  - `#ffffff`: Superficie de tarjetas y contenedores con sombras sutiles.
+- **Layout Adaptable:**
+  - **CSS Grid:** Grilla automática y fluida para las tarjetas de productos (`#lista-productos` y `#lista-remota`).
+  - **Flexbox:** Distribución del encabezado, controles de filtro y pie de página.
+  - **Media Queries:** Adaptación garantizada para teléfonos móviles, tablets y pantallas de escritorio.
 
-Se aplicó una identidad visual cálida y limpia mediante el uso de Custom Properties (Variables CSS). La paleta cromática destaca por un tono dorado principal (`#f1b959`) utilizado para los títulos y enlaces, el cual representa el color del pan artesanal, complementado con un fondo suave de tono crema (`#FAF7F2`) que mejora el contraste y la legibilidad. Los elementos de la lista de productos incorporan bordes redondeados (`border-radius`), un fondo blanco plano y sombras sutiles que generan un efecto moderno de tarjetas flotantes. Además, se integró una línea divisoria dorada debajo del menú para separar visualmente el bloque de presentación de la sección comercial de productos.
+### 3. Nuevos Módulos y Lógica JavaScript
+- **`render.js`:** Construye dinámicamente las tarjetas de producto (`.tarjeta`) en el DOM a partir de datos estructurados, mostrando disponibilidad, stock y precio formateado.
+- **`eventos.js`:** Permite búsqueda en tiempo real (`input`), filtrado por categorías mediante botones ("Todos", "Panes", "Masitas") con delegación de eventos, y validación de fecha en el formulario de pedidos.
+- **`jquery-panel.js`:** Implementa interactividad dinámica con menú responsive (`slideToggle`), acordeón de preguntas frecuentes con animación suave y avisos con efecto escalonado (`delay` + `fadeIn`).
+- **`jquery-comparado.js`:** Laboratorio que ilustra la comparativa técnica entre la manipulación con Vanilla JS (`querySelector`, `classList`) y los métodos de jQuery (`$()`, `text()`, `toggleClass()`).
+- **`remoto.js` & `datos.json`:** Demuestra el flujo de asincronía moderna (`fetch` + `async/await`) y clásico (`$.getJSON`), manejando los tres estados fundamentales: cargando, éxito y captura de errores (404/red).
 
-##capturas
+---
+
+## Capturas de Pantalla
+
 ![escritorio](./captura1.png)
 ![escritorio](./captura2.png)
 ![escritorio](./captura3.png)
 ![escritorio](./captura4.png)
 
+---
 
-
-##lo mas dificil
-lo mas dificil para mi fue el, entender los diferentes tipos de leguaje de programacion que utilizamos , que yo no lo domino pero pude realizar un sitio web presentable.
+## Lo más difícil del desarrollo
+Uno de los mayores retos fue articular e integrar armónicamente los diferentes módulos de programación web aprendidos: desde la estructura semántica limpia y el diseño visual con CSS, hasta la manipulación dinámica del DOM con JavaScript moderno, la interactividad avanzada con jQuery y el consumo asíncrono de APIs y archivos JSON.
+El resultado es un sitio web rápido, ordenado, accesible y de fácil navegación para todos los clientes de la panadería.

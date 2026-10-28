@@ -1,0 +1,73 @@
+{
+  "negocio": {
+    "nombre": "Panadería Largucho",
+    "anioFundacion": 2018,
+    "telefono": "71575507"
+  },
+  "productos": [
+    {
+      "nombre": "Pan del día",
+      "precio": 0.8,
+      "categoria": "panes",
+      "stock": 400,
+      "disponible": true,
+      "unidad": "unidad"
+    },
+    {
+      "nombre": "Pan marraqueta",
+      "precio": 0.8,
+      "categoria": "panes",
+      "stock": 250,
+      "disponible": true,
+      "unidad": "unidad"
+    },
+    {
+      "nombre": "Pan sarnita",
+      "precio": 0.8,
+      "categoria": "panes",
+      "stock": 80,
+      "disponible": true,
+      "unidad": "unidad"
+    },
+    {
+      "nombre": "Empanada de royal",
+      "precio": 1.5,
+      "categoria": "masitas",
+      "stock": 0,
+      "disponible": false,
+      "unidad": "unidad"
+    },
+    {
+      "nombre": "Bizcocho",
+      "precio": 5.0,
+      "categoria": "masitas",
+      "stock": 30,
+      "disponible": true,
+      "unidad": "unidad"
+    },
+    {
+      "nombre": "Empanada de queso",
+      "precio": 1.0,
+      "categoria": "masitas",
+      "stock": 2,
+      "disponible": true,
+      "unidad": "unidad"
+    },
+    {
+      "nombre": "Chamillo",
+      "precio": 0.8,
+      "categoria": "panes",
+      "stock": 50,
+      "disponible": true,
+      "unidad": "unidad"
+    },
+    {
+      "nombre": "Cuernitos",
+      "precio": 0.8,
+      "categoria": "masitas",
+      "stock": 0,
+      "disponible": false,
+      "unidad": "unidad"
+    }
+  ]
+}

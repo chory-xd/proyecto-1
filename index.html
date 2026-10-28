@@ -1,155 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Panadería Largucho: pan artesanal desde 2018.">
+  <title>Panadería Largucho</title>
+  <link rel="stylesheet" href="estilos.css">
 </head>
 <body>
-    <header>
-        <img src="logo.png" alt="Logo Panadería" class="logo">
-        <h1>PANADERIA LARGUCHO</h1>
-        <link rel="stylesheet" href="estilos.css">
-        <p>Pan artesanal largucho desde 2018</p>
-        <nav>
-        <ul>
-          <li><a href="#productos">Productos</a></li>
-          <li><a href="#horarios">Horarios</a></li>
-          <li><a href="#contacto">Contacto</a></li>
-        </ul>
+  <header class="encabezado">
+    <div class="header-left">
+      <p class="sobrelinea">PAN ARTESANAL · DESDE 2018</p>
+      <h1>Panadería <span>Largucho</span></h1>
+      <p class="subtitulo">Recién horneado, hecho con cariño.</p>
+      <button id="menu-toggle" class="menu-toggle" type="button" aria-controls="menu-movil" aria-expanded="false">☰ Menú</button>
+      <nav id="menu-movil" aria-label="Menú principal">
+        <a href="#productos">Productos</a>
+        <a href="#horarios">Horarios</a>
+        <a href="#pedido">Hacer pedido</a>
+        <a href="#contacto">Contacto</a>
       </nav>
-    </header>
+    </div>
+    <img src="logo.png" alt="Logo de Panadería Largucho" class="logo" onerror="this.style.display='none'">
+  </header>
 
-    </main>
-     <section id="productos"></section>
-         <h2>Nuestros productos</h2>
-         <article>
-          <h3>Pan del día</h3>
-          <p>Horneado a las 10 de la mañana, todos los días.</p>
-        </article>
+  <main>
+    <section class="bienvenida">
+      <div>
+        <p class="etiqueta">Sabor tradicional</p>
+        <h2>El aroma del pan recién hecho te espera</h2>
+        <p>Conoce nuestros panes y masitas artesanales. Consulta disponibilidad y prepara tu pedido fácilmente.</p>
+        <a class="boton-enlace" href="#productos">Ver productos</a>
+      </div>
+      <div class="bienvenida-icono" aria-hidden="true">🥖</div>
+    </section>
 
-        <article>
-          <h3>Pan marraqueta</h3>
-          <p>Por unidad o por mayor.</p>
-        </article>
+    <section id="productos">
+      <div class="titulo-seccion">
+        <div><p class="sobrelinea">NUESTRO MOSTRADOR</p><h2>Nuestros productos</h2></div>
+        <span id="resultado" class="contador" aria-live="polite">Cargando productos…</span>
+      </div>
+      <div class="controles-productos">
+        <label class="busqueda-label" for="buscador">Buscar producto
+          <input id="buscador" type="search" placeholder="Ej. marraqueta, empanada…" autocomplete="off">
+        </label>
+        <div id="filtros" class="filtros" aria-label="Filtrar por categoría">
+          <button type="button" class="activo" data-categoria="todos">Todos</button>
+          <button type="button" data-categoria="panes">Panes</button>
+          <button type="button" data-categoria="masitas">Masitas</button>
+        </div>
+      </div>
+      <div class="preferencias-panel" aria-label="Preferencias de la página">
+        <button id="tema-toggle" type="button" class="boton secundario" aria-pressed="false">🌙 Modo oscuro</button>
+        <label for="orden">Ordenar productos
+          <select id="orden"><option value="nombre">Por nombre</option><option value="precio-asc">Precio: menor a mayor</option><option value="precio-desc">Precio: mayor a menor</option></select>
+        </label>
+        <button id="olvidar" type="button" class="boton suave">Restablecer preferencias</button>
+        <span id="estado-prefs" role="status" aria-live="polite"></span>
+      </div>
+      <div id="lista-productos" class="productos-grid" aria-live="polite"></div>
+      <p class="nota-local">Los productos y precios se consultan desde los archivos de este proyecto.</p>
+    </section>
 
-        <article>
-          <h3>empanadas</h3>
-          <p>Solo los fines de semana, hasta que se acaban.</p>
-        </article>
-
-      </section>
-
-      <section id="horarios">
-        <h2>Horarios</h2>
-        <p>domingo a viernes, de 16:00 a 18:00 </p>
+    <section id="horarios">
+      <div class="titulo-seccion"><div><p class="sobrelinea">TE ESPERAMOS</p><h2>Horarios y precios</h2></div></div>
+      <p class="texto-intro">Atención de domingo a viernes, de 16:00 a 18:00.</p>
+      <div class="tabla-contenedor">
         <table>
-          <caption>Precios por producto y disponibilidad</caption>
-          <thead>
-            <tr>
-              <th scope="col">Producto</th>
-              <th scope="col">Precio</th>
-              <th scope="col">Disponible</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td>Pan del día</td>   <td>Bs 0.80</td>  <td>Todos los días</td></tr>
-            <tr><td>Pan empandas</td>  <td>Bs 1.50</td>  <td>solo domigos</td></tr>
-            <tr><td>hornaje de carnes</td>  <td>Bs 20</td> <td>avisar anticipdamente</td></tr>
+          <caption>Precios referenciales y disponibilidad</caption>
+          <thead><tr><th>Producto</th><th>Precio</th><th>Disponibilidad</th></tr></thead>
+          <tbody id="tabla-precios">
+            <tr><td>Pan del día</td><td>Bs 0,80</td><td>Consultar</td></tr>
+            <tr><td>Empanada de royal</td><td>Bs 1,50</td><td>Consultar</td></tr>
+            <tr><td>Horneaje de carnes</td><td>Bs 20,00</td><td>Con aviso anticipado</td></tr>
           </tbody>
         </table>
-        <figure>
-          <img src="panadero.jpg.jpeg"
-               alt="Te da lo mejor de dos mundos: por un lado, tienes la enorme inercia térmica y el calor envolvente de los materiales pesados 
-               (que ayudan muchísimo a que el pan crezca y quede con una corteza perfecta); y por el otro, tienes la comodidad, limpieza y control exacto
-                de la temperatura que te da el quemador de gas, sin tener que estar pendiente de la leña."
-               width="500" height="500">
-          <figcaption>el pan por la tarde es mejor queda muy fresco.</figcaption>
-        </figure>
-       <section id="pedido">
-        <h2>Hacer un pedido</h2>
+      </div>
+      <figure class="foto-pan">
+        <img src="panadero.jpg.jpeg" alt="Horno de la Panadería Largucho" loading="lazy" onerror="this.closest('figure').classList.add('sin-imagen')">
+        <figcaption>Pan fresco y artesanal, preparado con dedicación.</figcaption>
+      </figure>
+    </section>
 
-        <form action="/pedido" method="post">
+    <section id="pedido">
+      <div class="titulo-seccion"><div><p class="sobrelinea">FÁCIL Y RÁPIDO</p><h2>Hacer un pedido</h2></div></div>
+      <p class="texto-intro">Completa tus datos. El pedido se guardará en este navegador; luego podrás copiarlo para enviarlo por teléfono o mensajería.</p>
+      <form id="form-pedido">
+        <fieldset><legend>Tus datos</legend>
+          <div class="campo"><label for="nombre">Nombre completo</label><input type="text" id="nombre" name="nombre" autocomplete="name" required minlength="2" placeholder="Tu nombre"></div>
+          <div class="campo"><label for="email">Correo electrónico (opcional)</label><input type="email" id="email" name="email" autocomplete="email" placeholder="tunombre@correo.com"></div>
+          <div class="campo"><label for="telefono">Teléfono</label><input type="tel" id="telefono" name="telefono" autocomplete="tel" inputmode="numeric" pattern="[0-9]{7,8}" title="Ingresa 7 u 8 dígitos, sin espacios" required placeholder="Ej. 71575507"></div>
+        </fieldset>
+        <fieldset><legend>Detalle del pedido</legend>
+          <div class="campo"><label for="producto">Producto</label><select id="producto" name="producto" required><option value="">Selecciona un producto</option></select></div>
+          <div class="campo"><label for="cantidad">Cantidad</label><input type="number" id="cantidad" name="cantidad" min="1" max="100" value="1" required></div>
+          <div class="campo"><label for="fecha">Fecha de entrega</label><input type="date" id="fecha" name="fecha" required></div>
+          <div class="campo"><label for="notas">Indicaciones adicionales</label><textarea id="notas" name="notas" rows="3" placeholder="Hora aproximada, detalles del pedido…"></textarea></div>
+          <div class="resumen-pedido"><span>Total estimado</span><strong id="total-pedido">Bs 0,00</strong></div>
+          <div class="campo-checkbox"><input type="checkbox" id="terminos" name="terminos" required><label for="terminos">Acepto que el pedido debe confirmarse por teléfono.</label></div>
+        </fieldset>
+        <button class="boton principal" type="submit">Guardar pedido</button>
+        <p id="mensaje-pedido" class="mensaje" role="status" aria-live="polite"></p>
+      </form>
+      <div class="pedidos-guardados">
+        <div><h3>Pedidos guardados en este equipo</h3><p id="contador-pedidos">Todavía no hay pedidos guardados.</p></div>
+        <div class="acciones-pedidos"><button id="copiar-pedidos" class="boton secundario" type="button">Copiar pedidos</button><button id="borrar-pedidos" class="boton peligro" type="button">Borrar pedidos</button></div>
+      </div>
+      <div class="tabla-pedidos-contenedor" role="region" aria-label="Tabla de pedidos guardados" tabindex="0">
+        <table class="tabla-pedidos">
+          <thead><tr><th>Nombre</th><th>Teléfono</th><th>Producto</th><th>Cantidad</th><th>Total</th><th>Fecha de entrega</th><th>Acciones</th></tr></thead>
+          <tbody id="lista-pedidos"><tr><td colspan="7">Todavía no hay pedidos guardados.</td></tr></tbody>
+        </table>
+      </div>
+    </section>
 
-          <fieldset>
-            <legend>Tus datos</legend>
+    <section class="ubicacion-panel" aria-labelledby="ubicacion-titulo">
+      <h2 id="ubicacion-titulo">Consulta tu distancia</h2>
+      <p>Opcional: calcula una distancia aproximada hasta el punto de referencia del local. Requiere permiso de ubicación y un navegador compatible.</p>
+      <button id="ubicarme" type="button" class="boton secundario">Consultar mi ubicación</button>
+      <p id="estado-ubicacion" role="status" aria-live="polite"></p>
+    </section>
 
-            <p>
-              <label for="nombre">Nombre completo</label>
-              <!-- autocomplete deja que el navegador ofrezca datos ya guardados.
-                   required hace que el navegador impida enviar el campo vacío. -->
-              <input type="text" id="nombre" name="nombre"
-                     autocomplete="name" required>
-            </p>
-
-            <p>
-              <label for="email">Correo electrónico</label>
-              <input type="email" id="email" name="email"
-                     autocomplete="email" required>
-            </p>
-
-            <p>
-              <label for="telefono">Teléfono</label>
-              <!-- pattern valida con una expresión regular: aquí, de 7 a 8 dígitos.
-                   El title es el mensaje que el navegador muestra si no cumple.
-                   Sin title, el aviso de error no dice qué se espera. -->
-              <input type="tel" id="telefono" name="telefono"
-                     autocomplete="tel" pattern="[0-9]{7,8}"
-                     title="7 u 8 dígitos, sin espacios">
-            </p>
-          </fieldset>
-
-          <fieldset>
-            <legend>Tu pedido</legend>
-
-            <p>
-              <label for="producto">Producto</label>
-              
-              <select id="producto" name="producto" required>
-                <option value="">Elige uno</option>
-                <option value="dia">Pan del día</option>
-                <option value="integral">empandas</option>
-                <option value="molde">horneaje de carnes</option>
-              </select>
-            </p>
-
-            <p>
-              <label for="cantidad">Cantidad</label>
-              <input type="number" id="cantidad" name="cantidad"
-                     min="1" max="100" value="1" required>
-            </p>
-
-            <p>
-              <label for="fecha">Fecha de entrega</label>
-              <input type="date" id="fecha" name="fecha" required>
-            </p>
-
-            <p>
-              <label for="notas">Alguna indicación</label>
-              <textarea id="notas" name="notas" rows="3"></textarea>
-            </p>
-
-            <p>
-              
-              <input type="checkbox" id="terminos" name="terminos" required>
-              <label for="terminos">Acepto que el pedido se confirma por teléfono</label>
-            </p>
-          </fieldset>
-          <button type="submit">Enviar pedido</button>
-        </form>
-      </section>
-      </section>
-
-    </main>
-    <aside>
-      <h2>¿Sabías?</h2>
-      <p>Nuestro producto son artesanales no utilizamos productos de cresimiento para el pan como puede ser el mejorantes de pan </p>
+    <aside class="sabias">
+      <p class="sobrelinea">HECHO CON CARIÑO</p><h2>¿Sabías que…?</h2>
+      <p>Nuestros productos son artesanales. En Panadería Largucho trabajamos para ofrecer pan fresco y de calidad.</p>
+      <div id="acordeon" class="acordeon">
+        <button class="titulo" type="button" aria-expanded="false">¿Cómo conservar el pan?</button>
+        <div class="cuerpo" hidden><p>Guárdalo en una bolsa limpia, en un lugar fresco y seco. Para conservarlo más tiempo, puedes congelarlo bien cerrado.</p></div>
+        <button class="titulo" type="button" aria-expanded="false">¿Puedo pedir por mayor?</button>
+        <div class="cuerpo" hidden><p>Sí. Indica la cantidad y coordina la disponibilidad y la hora de entrega por teléfono.</p></div>
+      </div>
     </aside>
-    <footer id="contacto">
-      <h2>Contacto</h2>
-      <address>
-        camino a viacha
-        Pr. aroma colquencha<br>
-        Teléfono: 71575507
-      </address>
-      <p><small>&copy; 2026 Panadería largucho</small></p>
-    </footer>
 
-  </body>
+
+  </main>
+
+  <footer id="contacto">
+    <div><p class="sobrelinea">VISÍTANOS</p><h2>Panadería Largucho</h2><address>Camino a Viacha<br>Provincia Aroma, Colquencha<br>Teléfono: <a href="tel:+59171575507">71575507</a></address></div>
+    <p class="copyright">© 2026 Panadería Largucho. Todos los derechos reservados.</p>
+  </footer>
+
+  <!-- Carga local: jQuery debe ir antes de los archivos que usan $. -->
+  <script src="jquery-3.7.1.min.js"></script>
+  <script src="datos.js"></script>
+  <script src="render.js"></script>
+  <script src="funciones.js"></script>
+  <script src="app.js"></script>
+  <script src="eventos.js"></script>
+  <script src="jquery-comparado.js"></script>
+  <script src="jquery-panel.js"></script>
+  <script src="remoto.js"></script>
+  <script src="preferencias.js"></script>
+</body>
 </html>
-
- 
