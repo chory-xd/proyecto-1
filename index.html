@@ -21,7 +21,10 @@
         <a href="#contacto">Contacto</a>
       </nav>
     </div>
-    <img src="logo.png" alt="Logo de Panadería Largucho" class="logo" onerror="this.style.display='none'">
+    <div class="header-right">
+      <img src="logo.png" alt="Logo de Panadería Largucho" class="logo" onerror="this.style.display='none'">
+      <button id="tema-toggle" type="button" class="boton secundario tema-boton" aria-pressed="false">🌙 Modo oscuro</button>
+    </div>
   </header>
 
   <main>
@@ -51,7 +54,6 @@
         </div>
       </div>
       <div class="preferencias-panel" aria-label="Preferencias de la página">
-        <button id="tema-toggle" type="button" class="boton secundario" aria-pressed="false">🌙 Modo oscuro</button>
         <label for="orden">Ordenar productos
           <select id="orden"><option value="nombre">Por nombre</option><option value="precio-asc">Precio: menor a mayor</option><option value="precio-desc">Precio: mayor a menor</option></select>
         </label>
@@ -60,12 +62,41 @@
       </div>
       <div id="lista-productos" class="productos-grid" aria-live="polite"></div>
       <p class="nota-local">Los productos y precios se consultan desde los archivos de este proyecto.</p>
+      <div class="pedido-tablero" id="pedido-tablero">
+        <div class="pedido-tablero-intro">
+          <h3>Arma tu pedido</h3>
+          <p>Arrastra los panes y masitas a «Mi bandeja» o usa el botón «Agregar +». Tu selección se conserva aunque cierres la página.</p>
+        </div>
+        <div class="pedido-dos-columnas">
+          <div class="catalogo-panel">
+            <h3>Productos disponibles</h3>
+            <div id="catalogo-tablero" class="catalogo-tablero"></div>
+          </div>
+          <div class="bandeja-panel">
+            <div class="canasta-encabezado"><div><h3>Mi bandeja</h3><p id="contador-canasta" class="contador-canasta" aria-live="polite">0 productos en tu bandeja</p></div></div>
+            <div class="zona-pedir" id="zona-pedir">
+              <ul id="seleccion-tablero" class="seleccion-tablero"><li class="bandeja-vacia">Arrastra aquí los productos que quieras pedir.</li></ul>
+              <p id="total-seleccion" class="total-seleccion">Total: Bs 0,00</p>
+            </div>
+          </div>
+        </div>
+        <div class="bandeja-galletas-wrap">
+          <h3>Tu surtido</h3>
+          <p class="nota-local">Cada círculo representa una unidad seleccionada.</p>
+          <div id="bandeja-circulos" class="bandeja-circulos" aria-label="Representación visual de los productos seleccionados"></div>
+        </div>
+        <div class="acciones-bandeja">
+          <a href="#pedido" class="boton-enlace" id="hacer-pedido-bandeja">Hacer pedido ↓</a>
+          <button type="button" class="boton secundario" id="vaciar-seleccion">Vaciar bandeja</button>
+          <p id="aviso-tablero" role="status" aria-live="polite"></p>
+        </div>
+      </div>
     </section>
 
     <section id="horarios">
       <div class="titulo-seccion"><div><p class="sobrelinea">TE ESPERAMOS</p><h2>Horarios y precios</h2></div></div>
       <p class="texto-intro">Atención de domingo a viernes, de 16:00 a 18:00.</p>
-      <div class="tabla-contenedor">
+      <div class="tabla-contenedor" role="region" aria-label="Tabla de precios" tabindex="0">
         <table>
           <caption>Precios referenciales y disponibilidad</caption>
           <thead><tr><th>Producto</th><th>Precio</th><th>Disponibilidad</th></tr></thead>
@@ -82,6 +113,17 @@
       </figure>
     </section>
 
+    <section id="tablero" class="tablero-seccion" aria-labelledby="titulo-tablero">
+      <div class="titulo-seccion"><div><p class="sobrelinea">ORGANIZACIÓN</p><h2 id="titulo-tablero">Tablero de producción</h2></div></div>
+      <p class="texto-intro">Organiza tus productos entre Hornear, Reponer y Pausa. Arrastra las tarjetas entre columnas o usa el selector de cada tarjeta desde tu celular.</p>
+      <div class="tablero-columnas">
+        <div class="columna" data-columna="hornear"><h3>🔥 Hornear</h3><ul class="lista-columna"></ul><p class="total"></p></div>
+        <div class="columna" data-columna="reponer"><h3>📦 Reponer</h3><ul class="lista-columna"></ul><p class="total"></p></div>
+        <div class="columna" data-columna="pausa"><h3>⏸️ Pausa</h3><ul class="lista-columna"></ul><p class="total"></p></div>
+      </div>
+      <h3>Resumen de unidades</h3><div class="grafico-contenedor"><canvas id="grafico" width="580" height="260" role="img" aria-label="Gráfico de unidades por estado"></canvas></div>
+    </section>
+
     <section id="pedido">
       <div class="titulo-seccion"><div><p class="sobrelinea">FÁCIL Y RÁPIDO</p><h2>Hacer un pedido</h2></div></div>
       <p class="texto-intro">Completa tus datos. El pedido se guardará en este navegador; luego podrás copiarlo para enviarlo por teléfono o mensajería.</p>
@@ -91,34 +133,42 @@
           <div class="campo"><label for="email">Correo electrónico (opcional)</label><input type="email" id="email" name="email" autocomplete="email" placeholder="tunombre@correo.com"></div>
           <div class="campo"><label for="telefono">Teléfono</label><input type="tel" id="telefono" name="telefono" autocomplete="tel" inputmode="numeric" pattern="[0-9]{7,8}" title="Ingresa 7 u 8 dígitos, sin espacios" required placeholder="Ej. 71575507"></div>
         </fieldset>
+        <div id="resumen-bandeja-formulario" class="resumen-bandeja-formulario" hidden>
+          <h3>Productos de tu bandeja</h3>
+          <ul id="productos-elegidos-formulario"></ul>
+          <p><strong id="total-elegido-formulario">Total: Bs 0,00</strong></p>
+          <p class="nota-local">Estos productos se incluirán juntos en tu pedido.</p>
+        </div>
         <fieldset><legend>Detalle del pedido</legend>
-          <div class="campo"><label for="producto">Producto</label><select id="producto" name="producto" required><option value="">Selecciona un producto</option></select></div>
-          <div class="campo"><label for="cantidad">Cantidad</label><input type="number" id="cantidad" name="cantidad" min="1" max="100" value="1" required></div>
+          <div class="campo"><label for="producto">Producto</label><select id="producto" name="producto"><option value="">Selecciona un producto</option></select></div>
+          <div class="campo"><label for="cantidad">Cantidad</label><input type="number" id="cantidad" name="cantidad" min="1" max="100" value="1"></div>
           <div class="campo"><label for="fecha">Fecha de entrega</label><input type="date" id="fecha" name="fecha" required></div>
           <div class="campo"><label for="notas">Indicaciones adicionales</label><textarea id="notas" name="notas" rows="3" placeholder="Hora aproximada, detalles del pedido…"></textarea></div>
           <div class="resumen-pedido"><span>Total estimado</span><strong id="total-pedido">Bs 0,00</strong></div>
           <div class="campo-checkbox"><input type="checkbox" id="terminos" name="terminos" required><label for="terminos">Acepto que el pedido debe confirmarse por teléfono.</label></div>
         </fieldset>
-        <button class="boton principal" type="submit">Guardar pedido</button>
+        <button class="boton principal" type="submit">Guardar pedido</button> <button class="boton secundario" type="button" id="guardar-seleccion">Guardar productos seleccionados del tablero</button>
         <p id="mensaje-pedido" class="mensaje" role="status" aria-live="polite"></p>
       </form>
       <div class="pedidos-guardados">
         <div><h3>Pedidos guardados en este equipo</h3><p id="contador-pedidos">Todavía no hay pedidos guardados.</p></div>
         <div class="acciones-pedidos"><button id="copiar-pedidos" class="boton secundario" type="button">Copiar pedidos</button><button id="borrar-pedidos" class="boton peligro" type="button">Borrar pedidos</button></div>
       </div>
+      <p class="texto-intro">Revisa aquí tus pedidos guardados. En celulares puedes deslizar la tabla horizontalmente para ver todas las columnas.</p>
       <div class="tabla-pedidos-contenedor" role="region" aria-label="Tabla de pedidos guardados" tabindex="0">
         <table class="tabla-pedidos">
-          <thead><tr><th>Nombre</th><th>Teléfono</th><th>Producto</th><th>Cantidad</th><th>Total</th><th>Fecha de entrega</th><th>Acciones</th></tr></thead>
+          <thead><tr><th>Nombre</th><th>Teléfono</th><th>Productos</th><th>Unidades</th><th>Total</th><th>Fecha de entrega</th><th>Acciones</th></tr></thead>
           <tbody id="lista-pedidos"><tr><td colspan="7">Todavía no hay pedidos guardados.</td></tr></tbody>
         </table>
       </div>
     </section>
 
     <section class="ubicacion-panel" aria-labelledby="ubicacion-titulo">
-      <h2 id="ubicacion-titulo">Consulta tu distancia</h2>
-      <p>Opcional: calcula una distancia aproximada hasta el punto de referencia del local. Requiere permiso de ubicación y un navegador compatible.</p>
-      <button id="ubicarme" type="button" class="boton secundario">Consultar mi ubicación</button>
+      <h2 id="ubicacion-titulo">¿A qué distancia estás de Panadería Largucho?</h2>
+      <p>Consulta a cuántos metros o kilómetros te encuentras de Panadería Largucho. La distancia es aproximada y en línea recta. Para ver cómo llegar, abre Google Maps.</p>
+      <button id="ubicarme" type="button" class="boton secundario">Calcular distancia a la panadería</button>
       <p id="estado-ubicacion" role="status" aria-live="polite"></p>
+      <a id="abrir-maps" class="boton secundario" href="https://www.google.com/maps/search/?api=1&query=-16.9277998%2C-68.2477373" target="_blank" rel="noopener noreferrer">📍 Ir a Google Maps</a>
     </section>
 
     <aside class="sabias">
@@ -151,5 +201,6 @@
   <script src="jquery-panel.js"></script>
   <script src="remoto.js"></script>
   <script src="preferencias.js"></script>
+  <script src="tablero.js"></script>
 </body>
 </html>

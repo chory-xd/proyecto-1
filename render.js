@@ -6,6 +6,8 @@ function crearTarjeta(producto) {
   articulo.classList.add("tarjeta");
   if (!producto.disponible || producto.stock <= 0) articulo.classList.add("agotado");
   articulo.dataset.nombre = producto.nombre;
+  articulo.dataset.productoId = producto.id;
+  articulo.draggable = Boolean(producto.disponible && producto.stock > 0);
   articulo.dataset.categoria = producto.categoria;
 
   const categoria = document.createElement("span");
@@ -20,7 +22,13 @@ function crearTarjeta(producto) {
   stock.className = "stock";
   stock.textContent = producto.disponible && producto.stock > 0 ? `${producto.stock} en stock` : "Agotado";
 
-  articulo.append(categoria, titulo, precio, stock);
+  const agregar = document.createElement("button");
+  agregar.type = "button";
+  agregar.className = "boton secundario agregar-a-bandeja";
+  agregar.textContent = producto.disponible && producto.stock > 0 ? "Agregar +" : "Agotado";
+  agregar.disabled = !producto.disponible || producto.stock <= 0;
+  agregar.setAttribute("aria-label", `Agregar ${producto.nombre} a la bandeja`);
+  articulo.append(categoria, titulo, precio, stock, agregar);
   return articulo;
 }
 

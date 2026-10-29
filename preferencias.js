@@ -73,59 +73,43 @@ document.querySelector("#olvidar")?.addEventListener("click", () => {
 // ── 5. LO QUE NUNCA VA EN localStorage ──────────────────────────────────
 
 // ── 6. GEOLOCATION ──────────────────────────────────────────────────────
-const LOCAL = { lat: -16.5, lng: -68.15 };
+// Coordenadas de referencia que ya estaban en eventos.js.
+// IMPORTANTE: confirmar en el mapa que son las de Panadería Largucho.
+const LOCAL = { lat: -16.9277998, lng: -68.2477373 };
 
 function distanciaKm(lat1, lng1, lat2, lng2) {
   const R = 6371;
-  const aRad = (g) => (g * Math.PI) / 180;
-  const dLat = aRad(lat2 - lat1);
-  const dLng = aRad(lng2 - lng1);
-  const a = Math.sin(dLat / 2) ** 2 +
-            Math.cos(aRad(lat1)) * Math.cos(aRad(lat2)) * Math.sin(dLng / 2) ** 2;
+  const rad = grados => grados * Math.PI / 180;
+  const dLat = rad(lat2 - lat1);
+  const dLng = rad(lng2 - lng1);
+  const a = Math.sin(dLat / 2) ** 2 + Math.cos(rad(lat1)) * Math.cos(rad(lat2)) * Math.sin(dLng / 2) ** 2;
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
-const $ubic = document.querySelector("#estado-ubicacion");
-
-document.querySelector("#ubicarme")?.addEventListener("click", () => {
-
+const botonUbicacion = document.querySelector("#ubicarme");
+const estadoUbicacion = document.querySelector("#estado-ubicacion");
+botonUbicacion?.addEventListener("click", () => {
   if (!navigator.geolocation) {
-    $ubic.textContent = "Tu navegador no permite compartir la ubicación.";
-    $ubic.className = "error";
+    estadoUbicacion.textContent = "Tu navegador no admite geolocalización.";
     return;
   }
-
-  $ubic.textContent = "Pidiendo permiso...";
-  $ubic.className = "cargando";
-
+  botonUbicacion.disabled = true;
+  estadoUbicacion.textContent = "Calculando tu distancia a Panadería Largucho...";
   navigator.geolocation.getCurrentPosition(
-
-    (position) => {
-      const { latitude, longitude, accuracy } = position.coords;
+    posicion => {
+      const { latitude, longitude } = posicion.coords;
       const km = distanciaKm(latitude, longitude, LOCAL.lat, LOCAL.lng);
-      $ubic.textContent =
-        `Estás a ${km.toFixed(1)} km del local (precisión: ${Math.round(accuracy)} m).`;
-      $ubic.className = "ok";
+      const distancia = km < 1 ? `${Math.round(km * 1000)} metros` : `${km.toFixed(2).replace(".", ",")} kilómetros`;
+      estadoUbicacion.textContent = `Distancia aproximada a Panadería Largucho: ${distancia} (en línea recta).`;
+      estadoUbicacion.className = "ok";
+      botonUbicacion.disabled = false;
     },
-
-    (error) => {
-      const mensajes = {
-        [error.PERMISSION_DENIED]:
-          "No diste permiso. Puedes seguir usando la página igual.",
-        [error.POSITION_UNAVAILABLE]:
-          "No se pudo determinar tu ubicación. ¿Estás bajo techo?",
-        [error.TIMEOUT]:
-          "Tardó demasiado. Intenta de nuevo.",
-      };
-      $ubic.textContent = mensajes[error.code] || "No se pudo obtener la ubicación.";
-      $ubic.className = "error";
+    error => {
+      estadoUbicacion.textContent = error.code === 1 ? "Permite el acceso a tu ubicación para conocer tu distancia a Panadería Largucho." : "No se pudo obtener tu ubicación. Activa el GPS e inténtalo nuevamente. En algunos navegadores se necesita HTTPS.";
+      estadoUbicacion.className = "error";
+      botonUbicacion.disabled = false;
     },
-
-    {
-      enableHighAccuracy: false,
-      timeout: 10000,
-      maximumAge: 300000,
-    }
+    { enableHighAccuracy: true, timeout: 20000, maximumAge: 0 }
   );
 });
 

@@ -53,9 +53,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     pedidos.forEach((pedido, indice) => {
       const fila = tabla.insertRow();
-      [pedido.nombre, pedido.telefono, pedido.productoNombre || pedido.producto,
-       pedido.cantidad, `Bs ${Number(pedido.total || 0).toFixed(2).replace(".", ",")}`,
-       pedido.fecha].forEach(valor => { const celda = fila.insertCell(); celda.textContent = valor ?? ""; });
+      const resumenProductos = Array.isArray(pedido.items) ? pedido.items.map(item => `${item.nombre} × ${item.cantidad}`).join(", ") : (pedido.productoNombre || pedido.producto || "");
+      const unidadesPedido = Array.isArray(pedido.items) ? pedido.items.reduce((suma, item) => suma + Number(item.cantidad || 0), 0) : (pedido.cantidad || "");
+      [pedido.nombre, pedido.telefono, resumenProductos, unidadesPedido, `Bs ${Number(pedido.total || 0).toFixed(2).replace(".", ",")}`, pedido.fecha].forEach(valor => { const celda = fila.insertCell(); celda.textContent = valor ?? ""; });
       const celdaAccion = fila.insertCell();
       const boton = document.createElement("button");
       boton.type = "button"; boton.className = "boton peligro boton-borrar-fila";
@@ -65,6 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
   actualizarContador();
+  window.addEventListener("largucho-pedidos-actualizados", actualizarContador);
   document.querySelector("#lista-pedidos")?.addEventListener("click", event => {
     const boton = event.target.closest("button[data-indice]");
     if (!boton) return;
@@ -94,24 +95,49 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     fecha.setCustomValidity("");
     const datos = Object.fromEntries(new FormData(form).entries());
-    const producto = productos.find(p => p.id === datos.producto);
-    if (!producto) return;
-    datos.productoNombre = producto.nombre;
-    datos.precioUnitario = producto.precio;
-    datos.total = calcularTotal(producto.precio, Number(datos.cantidad));
+    let seleccion = {};
+    try {
+      const guardada = JSON.parse(localStorage.getItem("largucho-seleccion-tablero") || "{}");
+      if (guardada && typeof guardada === "object" && !Array.isArray(guardada)) seleccion = guardada;
+    } catch {}
+    const items = Object.entries(seleccion).map(([id, n]) => {
+      const prod = productos.find(x => x.id === id);
+      if (!prod || !prod.disponible || prod.stock <= 0) return null;
+      const cantidadItem = Math.max(1, Math.min(prod.stock, 100, Number(n) || 1));
+      return { id: prod.id, nombre: prod.nombre, cantidad: cantidadItem, precioUnitario: prod.precio, subtotal: calcularTotal(prod.precio, cantidadItem) };
+    }).filter(Boolean);
+    if (items.length) {
+      datos.items = items;
+      datos.productoNombre = items.map(item => `${item.nombre} × ${item.cantidad}`).join(", ");
+      datos.cantidad = items.reduce((suma, item) => suma + item.cantidad, 0);
+      datos.total = items.reduce((suma, item) => suma + item.subtotal, 0);
+      datos.tipoPedido = "bandeja";
+    } else {
+      const prod = productos.find(x => x.id === datos.producto);
+      if (!prod) {
+        mensaje.className = "mensaje error";
+        mensaje.textContent = "Agrega productos a la bandeja o selecciona un producto en el formulario.";
+        return;
+      }
+      datos.productoNombre = prod.nombre;
+      datos.precioUnitario = prod.precio;
+      datos.total = calcularTotal(prod.precio, Number(datos.cantidad));
+      datos.items = [{ id: prod.id, nombre: prod.nombre, cantidad: Number(datos.cantidad), precioUnitario: prod.precio, subtotal: datos.total }];
+      datos.tipoPedido = "individual";
+    }
     datos.creado = new Date().toLocaleString();
     const pedidos = obtenerPedidos();
     pedidos.push(datos);
     try {
       localStorage.setItem("largucho-pedidos", JSON.stringify(pedidos));
       mensaje.className = "mensaje ok";
-      mensaje.textContent = `Gracias ${datos.nombre}. El pedido se guardó en este equipo. Recuerda confirmarlo por teléfono.`;
+      mensaje.textContent = `Gracias ${datos.nombre}. Tu pedido con ${datos.items.length} producto(s) se guardó en este equipo. Recuerda confirmarlo por teléfono.`;
       form.reset();
-      fecha.min = fechaActual();
-      fecha.value = fecha.min;
-      cantidad.value = "1";
-      actualizarTotal();
-      actualizarContador();
+      fecha.min = fechaActual(); fecha.value = fecha.min; cantidad.value = "1";
+      localStorage.removeItem("largucho-seleccion-tablero");
+      document.querySelector("#resumen-bandeja-formulario")?.setAttribute("hidden", "");
+      actualizarTotal(); actualizarContador();
+      window.dispatchEvent(new Event("largucho-bandeja-vaciada"));
     } catch {
       mensaje.className = "mensaje error";
       mensaje.textContent = "No se pudo guardar en este navegador. Comprueba el espacio disponible o ejecuta la página con un servidor local.";
@@ -122,7 +148,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelector("#copiar-pedidos")?.addEventListener("click", async () => {
     const pedidos = obtenerPedidos();
     if (!pedidos.length) { mensaje.className = "mensaje error"; mensaje.textContent = "No hay pedidos guardados para copiar."; return; }
-    const texto = pedidos.map((p, i) => `${i + 1}. ${p.nombre} | ${p.telefono} | ${p.productoNombre} x${p.cantidad} | Total Bs ${Number(p.total).toFixed(2)} | Entrega: ${p.fecha}${p.notas ? " | " + p.notas : ""}`).join("\n");
+    const texto = pedidos.map((p, i) => `${i + 1}. ${p.nombre} | ${p.telefono} | ${Array.isArray(p.items) ? p.items.map(x => `${x.nombre} x${x.cantidad}`).join(", ") : `${p.productoNombre} x${p.cantidad}`} | Total Bs ${Number(p.total).toFixed(2)} | Entrega: ${p.fecha}${p.notas ? " | " + p.notas : ""}`).join("\n");
     try {
       if (navigator.clipboard && window.isSecureContext) await navigator.clipboard.writeText(texto);
       else {
