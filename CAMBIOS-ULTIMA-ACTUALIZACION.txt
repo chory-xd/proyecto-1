@@ -1,0 +1,16 @@
+PANADERÍA LARGUCHO – CAMBIOS DE ESTA VERSIÓN
+
+1. Cabecera centrada, sin logotipo lateral; navegación ordenada en una línea en escritorio.
+2. Sección de temporada navideña colocada antes del catálogo regular.
+3. Panetón clásico (Bs 45) y panetón de chocolate (Bs 55) con botón Agregar a la bandeja.
+4. Los panetones ya no se repiten en el catálogo general ni en «Arma tu pedido»; siguen integrados a Mi bandeja, Tu surtido, totales y resumen del pedido.
+5. Fichas del catálogo más compactas.
+6. Se eliminó la tabla de precios referenciales y disponibilidad.
+7. Horarios: domingo a viernes, 07:00–09:00 y 16:00–18:00. El estado ABIERTO/CERRADO se actualiza según la hora local del dispositivo.
+8. Historia del Día del Panadero en tarjeta lateral.
+9. Se retiró el bloque «Nuestro compromiso / Organización».
+10. Formulario de pedido en dos columnas en pantallas amplias; una columna en móvil.
+11. Botón de envío renombrado a «Finalizar pedido».
+12. Footer «Visítanos» centrado y con fondo diferenciado.
+
+Las fotos de panetones se cargan desde Pexels (ver CREDITOS-IMAGENES.txt); requieren Internet. Si no cargan, se muestran los SVG locales de respaldo.

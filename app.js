@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (fecha) { fecha.min = fechaLocal; fecha.value = fechaLocal; }
 
   if (selectProducto) {
-    productos.forEach(p => {
+    productos.filter(p => !p.temporada).forEach(p => {
       const option = document.createElement("option");
       option.value = p.id;
       option.textContent = `${p.nombre} — Bs ${p.precio.toFixed(2)}${p.disponible && p.stock > 0 ? "" : " (agotado)"}`;

@@ -34,10 +34,12 @@ panaderia/
 ├── jquery-panel.js         # Menú móvil deslizable, acordeón interactivo y avisos
 ├── jquery-comparado.js     # Demostración comparativa de Vanilla JS vs jQuery
 ├── remoto.js               # Carga asíncrona de datos vía Fetch (async/await) y AJAX
-│
-├── logo.png                # Logotipo oficial de Panadería Largucho
-├── panadero.jpg.jpeg       # Fotografía del horno artesanal
-└── capturas*.png           # Capturas de pantalla de la interfaz
+└── imagenes/               # Carpeta centralizada con todas las imágenes del proyecto
+    ├── logo.png            # Logotipo oficial de Panadería Largucho
+    ├── panadero.jpg        # Fotografía del maestro panadero en Colquencha
+    ├── portada-pan.webp    # Imagen principal de bienvenida
+    ├── *.webp              # Fotografías optimizadas de panes y masitas
+    └── captura*.png        # Capturas de pantalla de la interfaz
 ```
 
 ---
@@ -73,10 +75,10 @@ panaderia/
 
 ## Capturas de Pantalla
 
-![escritorio](./captura1.png)
-![escritorio](./captura2.png)
-![escritorio](./captura3.png)
-![escritorio](./captura4.png)
+![escritorio](./imagenes/captura1.png)
+![escritorio](./imagenes/captura2.png)
+![escritorio](./imagenes/captura3.png)
+![escritorio](./imagenes/captura4.png)
 
 ---
 

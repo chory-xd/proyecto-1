@@ -18,7 +18,9 @@ const productos = [
   { id: "bizcocho", nombre: "Bizcocho", precio: 5, categoria: "masitas", stock: 30, disponible: true, unidad: "unidad" },
   { id: "empanada-queso", nombre: "Empanada de queso", precio: 1, categoria: "masitas", stock: 2, disponible: true, unidad: "unidad" },
   { id: "chamillo", nombre: "Chamillo", precio: 0.8, categoria: "panes", stock: 50, disponible: true, unidad: "unidad" },
-  { id: "cuernitos", nombre: "Cuernitos", precio: 0.8, categoria: "masitas", stock: 0, disponible: false, unidad: "unidad" }
+  { id: "cuernitos", nombre: "Cuernitos", precio: 0.8, categoria: "masitas", stock: 0, disponible: false, unidad: "unidad" },
+  { id: "paneton-clasico", nombre: "Panetón clásico", precio: 45, categoria: "masitas", stock: 100, disponible: true, unidad: "unidad", temporada: true },
+  { id: "paneton-chocolate", nombre: "Panetón de chocolate", precio: 55, categoria: "masitas", stock: 100, disponible: true, unidad: "unidad", temporada: true }
 ];
 
 console.log("Tipos:", typeof negocio, typeof productos, typeof productos[0].precio);

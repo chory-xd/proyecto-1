@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 440" preserveAspectRatio="xMidYMid slice">
+<defs>
+ <linearGradient id="sky" x2="0" y2="1"><stop stop-color="#ead9bd" stop-opacity=".18"/><stop offset="1" stop-color="#c99f70" stop-opacity=".32"/></linearGradient>
+ <linearGradient id="snow" x2="0" y2="1"><stop stop-color="#fff7e8"/><stop offset="1" stop-color="#cbb99e"/></linearGradient>
+ <linearGradient id="hill" x2="0" y2="1"><stop stop-color="#94785e"/><stop offset="1" stop-color="#604b3b"/></linearGradient>
+</defs>
+<rect width="1600" height="440" fill="url(#sky)"/>
+<!-- Cordillera del Illimani -->
+<path d="M0 355 110 270 205 285 310 190 390 222 510 82 565 122 640 28 700 94 770 165 845 126 920 222 1000 184 1080 270 1180 212 1270 276 1370 218 1480 280 1600 210 1600 440 0 440Z" fill="url(#hill)" opacity=".72"/>
+<path d="m310 190 80 32 120-140 55 40 75-94 60 66 70 71-68-31-62-47-77 32-56-26-95 116-52-19Z" fill="url(#snow)" opacity=".95"/>
+<path d="m510 82 55 40 75-94 60 66 70 71-61-27-69-58-66 40-39-20Z" fill="#fffaf0" opacity=".94"/>
+<path d="M0 355 110 270 205 285 310 190 390 222 510 82 565 122 640 28 700 94 770 165 845 126 920 222 1000 184 1080 270 1180 212 1270 276 1370 218 1480 280 1600 210" fill="none" stroke="#765c46" stroke-width="5" opacity=".65"/>
+<!-- Trazos de ladera -->
+<g fill="none" stroke="#f8ecd8" stroke-width="2" opacity=".48"><path d="m332 205 55 15 100-112M540 110l45 32 53-71M650 54l45 54 47 47M790 176l57-35 70 80M1020 204l55 64M1190 235l77 44M1370 242l90 45"/><path d="m80 326 100-35 65 12m-8 32 82-38m820 12 78-32 65 18"/></g>
+<!-- Cables -->
+<g fill="none" stroke="#594638" stroke-width="4" opacity=".88"><path d="M0 115 1600 20"/><path d="M0 156 1600 61"/></g>
+<g stroke="#594638" stroke-width="6" fill="none" opacity=".85"><path d="M220 101v113m-13-112h26M1120 48v143m-13-142h26M1460 28v142m-13-141h26"/></g>
+<!-- Cabinas -->
+<g stroke="#5b4637" stroke-width="3" fill="#8d5e3c"><g transform="translate(390 87) rotate(-2)"><path d="M0-10v19"/><rect x="-19" y="9" width="38" height="48" rx="10"/><rect x="-12" y="17" width="24" height="23" rx="5" fill="#e8d5b9"/><path d="M-18 44h36"/></g><g transform="translate(825 62) rotate(-2)"><path d="M0-10v19"/><rect x="-19" y="9" width="38" height="48" rx="10"/><rect x="-12" y="17" width="24" height="23" rx="5" fill="#e8d5b9"/><path d="M-18 44h36"/></g><g transform="translate(1280 35) rotate(-2)"><path d="M0-10v19"/><rect x="-19" y="9" width="38" height="48" rx="10"/><rect x="-12" y="17" width="24" height="23" rx="5" fill="#e8d5b9"/><path d="M-18 44h36"/></g></g>
+<path d="M0 390q220-30 440 0t440 0 440 0 280 0v50H0Z" fill="#684c39" opacity=".25"/>
+</svg>

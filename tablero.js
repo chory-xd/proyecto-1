@@ -1,178 +1,3 @@
-const COLUMNAS = ["hornear", "reponer", "pausa"];
-const CLAVE_TABLERO = "largucho-tablero";
-let tablero = {
-  hornear: [
-    { nombre: "Pan del día", cantidad: 120 },
-    { nombre: "Pan marraqueta", cantidad: 250 },
-    { nombre: "Pan sarnita", cantidad: 80 },
-    { nombre: "Chamillo", cantidad: 50 },
-  ],
-  reponer: [
-    { nombre: "Bizcocho", cantidad: 30 },
-    { nombre: "Empanada de queso", cantidad: 2 },
-  ],
-  pausa: [
-    { nombre: "Empanada de royal", cantidad: 0 },
-    { nombre: "Cuernitos", cantidad: 0 },
-  ],
-};
-
-try {
-  const guardado = JSON.parse(localStorage.getItem(CLAVE_TABLERO));
-  if (guardado && COLUMNAS.every(c => Array.isArray(guardado[c]))) tablero = guardado;
-} catch (e) { /* Se conserva el tablero inicial */ }
-function guardarTablero() { try { localStorage.setItem(CLAVE_TABLERO, JSON.stringify(tablero)); } catch (e) {} }
-
-// ── 1. PINTAR EL TABLERO ────────────────────────────────────────────────
-function renderTablero() {
-  COLUMNAS.forEach((nombreColumna) => {
-    const columna = document.querySelector(`[data-columna="${nombreColumna}"]`);
-    const lista = columna.querySelector(".lista-columna");
-    lista.innerHTML = "";
-
-    tablero[nombreColumna].forEach((item, indice) => {
-      const li = document.createElement("li");
-      li.className = "ficha";
-
-      li.draggable = true;
-
-      li.dataset.columna = nombreColumna;
-      li.dataset.indice = indice;
-
-      const titulo = document.createElement("span");
-      titulo.textContent = `${item.nombre} (${item.cantidad})`;
-      const selector = document.createElement("select");
-      selector.setAttribute("aria-label", `Mover ${item.nombre} a otra columna`);
-      COLUMNAS.forEach(c => {
-        const opcion = document.createElement("option");
-        opcion.value = c; opcion.textContent = c[0].toUpperCase() + c.slice(1);
-        opcion.selected = c === nombreColumna;
-        selector.append(opcion);
-      });
-      selector.addEventListener("change", () => moverFicha(nombreColumna, indice, selector.value));
-      li.append(titulo, selector);
-      lista.append(li);
-    });
-
-    const total = tablero[nombreColumna].reduce((suma, i) => suma + i.cantidad, 0);
-
-    const n = tablero[nombreColumna].length;
-    columna.querySelector(".total").textContent =
-      `${n} ${n === 1 ? "item" : "items"} · ${total} unidades`;
-  });
-
-  dibujarGrafico();
-}
-
-function moverFicha(origen, indice, destino) {
-  if (origen === destino || !COLUMNAS.includes(origen) || !COLUMNAS.includes(destino)) return;
-  const item = tablero[origen]?.[indice];
-  if (!item) return;
-  tablero[origen].splice(indice, 1);
-  tablero[destino].push(item);
-  guardarTablero();
-  renderTablero();
-}
-
-// ── 2. DRAG & DROP: LOS EVENTOS, EN ORDEN ───────────────────────────────
-const elTablero = document.querySelector("#tablero");
-
-elTablero.addEventListener("dragstart", (event) => {
-  const ficha = event.target.closest(".ficha");
-  if (!ficha) return;
-
-  event.dataTransfer.setData("text/plain", JSON.stringify({
-    columna: ficha.dataset.columna,
-    indice: Number(ficha.dataset.indice),
-  }));
-
-  event.dataTransfer.effectAllowed = "move";
-  ficha.classList.add("arrastrando");
-});
-
-elTablero.addEventListener("dragend", (event) => {
-  const ficha = event.target.closest(".ficha");
-  if (ficha) ficha.classList.remove("arrastrando");
-  document.querySelectorAll(".columna").forEach(c => c.classList.remove("encima"));
-});
-
-elTablero.addEventListener("dragover", (event) => {
-  const columna = event.target.closest(".columna");
-  if (!columna) return;
-
-  event.preventDefault();
-  event.dataTransfer.dropEffect = "move";
-  columna.classList.add("encima");
-});
-
-elTablero.addEventListener("dragleave", (event) => {
-  const columna = event.target.closest(".columna");
-  if (columna) columna.classList.remove("encima");
-});
-
-elTablero.addEventListener("drop", (event) => {
-  const columna = event.target.closest(".columna");
-  if (!columna) return;
-
-  event.preventDefault();
-
-  const destino = columna.dataset.columna;
-  let origen;
-  try { origen = JSON.parse(event.dataTransfer.getData("text/plain")); } catch (e) { return; }
-
-  moverFicha(origen.columna, origen.indice, destino);
-});
-
-// ── 3. CANVAS: EL TAMAÑO ────────────────────────────────────────────────
-const canvas = document.querySelector("#grafico");
-const ctx = canvas.getContext("2d");
-
-// ── 4. DIBUJAR ──────────────────────────────────────────────────────────
-function dibujarGrafico() {
-  const totales = COLUMNAS.map(c =>
-    tablero[c].reduce((suma, i) => suma + i.cantidad, 0)
-  );
-  const maximo = Math.max(...totales, 1);
-
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  const margen = 40;
-  const anchoBarra = 110;
-  const separacion = 60;
-  const alturaUtil = canvas.height - margen * 2;
-
-  const estilo = getComputedStyle(document.body);
-  const colorBarra = estilo.getPropertyValue("--color-principal").trim() || "#1a4a7a";
-  const colorTexto = estilo.getPropertyValue("--color-texto").trim() || "#1f2933";
-
-  COLUMNAS.forEach((nombre, i) => {
-    const x = margen + i * (anchoBarra + separacion);
-    const alto = (totales[i] / maximo) * alturaUtil;
-    const y = canvas.height - margen - alto;
-
-    ctx.fillStyle = colorBarra;
-    ctx.fillRect(x, y, anchoBarra, alto);
-
-    ctx.fillStyle = colorTexto;
-    ctx.font = "14px system-ui, sans-serif";
-    ctx.textAlign = "center";
-    ctx.fillText(nombre, x + anchoBarra / 2, canvas.height - margen + 20);
-    ctx.fillText(String(totales[i]), x + anchoBarra / 2, y - 8);
-  });
-
-  ctx.beginPath();
-  ctx.moveTo(margen - 10, canvas.height - margen);
-  ctx.lineTo(canvas.width - margen + 10, canvas.height - margen);
-  ctx.strokeStyle = colorTexto;
-  ctx.lineWidth = 1;
-  ctx.stroke();
-}
-
-// ── 5. ANIMAR: EL LOOP ──────────────────────────────────────────────────
-
-// ── 6. LO QUE NO FUNCIONA EN MÓVIL ──────────────────────────────────────
-renderTablero();
-
 // Selección de productos para pedidos: independiente del tablero de producción.
 (function iniciarPedidoTablero() {
   const catalogo = document.querySelector("#catalogo-tablero");
@@ -185,6 +10,32 @@ renderTablero();
   try { const anterior = JSON.parse(localStorage.getItem(CLAVE_SELECCION) || "{}"); if (anterior && typeof anterior === "object" && !Array.isArray(anterior)) seleccion = anterior; } catch {}
   const precio = valor => `Bs ${valor.toFixed(2).replace(".", ",")}`;
   const aviso = document.querySelector("#aviso-tablero");
+  const widgetPan = document.querySelector("#pan-flotante-widget");
+  const botonPanFlotante = document.querySelector("#boton-pan-flotante");
+  const badgePanFlotante = document.querySelector("#pan-flotante-badge");
+  const burbujaTexto = document.querySelector("#pan-burbuja-texto");
+  const linkWhatsapp = document.querySelector("#pan-whatsapp");
+  let timerCelebracion = 0;
+  let timerBurbuja = 0;
+
+  function animarPanFlotante(mensajeTemporal) {
+    if (!widgetPan) return;
+    widgetPan.classList.remove("pan-celebra");
+    void widgetPan.offsetWidth;
+    widgetPan.classList.add("pan-celebra", "burbuja-visible");
+    if (mensajeTemporal && burbujaTexto) {
+      burbujaTexto.innerHTML = mensajeTemporal;
+    }
+    window.clearTimeout(timerCelebracion);
+    window.clearTimeout(timerBurbuja);
+    timerCelebracion = window.setTimeout(() => {
+      widgetPan.classList.remove("pan-celebra");
+    }, 1100);
+    timerBurbuja = window.setTimeout(() => {
+      widgetPan.classList.remove("burbuja-visible");
+    }, 3400);
+  }
+
   function agregar(id) {
     const p = productos.find(x => x.id === id);
     if (!p || !p.disponible || p.stock <= 0) return;
@@ -196,6 +47,7 @@ renderTablero();
     destino.classList.add("canasta-late");
     window.setTimeout(() => destino.classList.remove("canasta-late"), 650);
     aviso.textContent = `${p.nombre} agregado a tu canasta.`;
+    animarPanFlotante(`<strong>¡Qué rico! 🥖✨</strong><br>Agregaste <b>${p.nombre}</b> a tu bandeja.`);
   }
   function pintar() {
     lista.replaceChildren(); let total = 0;
@@ -218,29 +70,45 @@ renderTablero();
     const circulos = document.querySelector("#bandeja-circulos");
     if (circulos) {
       circulos.replaceChildren();
-      let dibujados = 0;
+      const fotos = {
+        "pan-dia": "pan-dia", "marraqueta": "marraqueta", "sarnita": "sarnita",
+        "empanada-royal": "empanada-royal", "bizcocho": "bizcocho",
+        "empanada-queso": "empanada-queso", "chamillo": "chamillo", "cuernitos": "cuernitos",
+        "paneton-clasico": "paneton-clasico", "paneton-chocolate": "paneton-chocolate"
+      };
+      let productosDibujados = 0;
       Object.entries(seleccion).forEach(([id, cantidad]) => {
         const p = productos.find(x => x.id === id);
-        if (!p) return;
-        for (let i = 0; i < Number(cantidad) && dibujados < 36; i++, dibujados++) {
-          const circulo = document.createElement("span");
-          circulo.className = `galleta-circulo color-${dibujados % 6}`;
-          circulo.textContent = p.nombre;
-          circulo.title = `${p.nombre} · Bs ${p.precio.toFixed(2)}`;
-          circulos.append(circulo);
-        }
+        if (!p || Number(cantidad) < 1) return;
+        const grupo = document.createElement("div");
+        grupo.className = `surtido-producto surtido-${id}`;
+        grupo.title = `${p.nombre}: ${cantidad} unidad(es)`;
+        const circulo = document.createElement("div");
+        circulo.className = "galleta-circulo";
+        const foto = document.createElement("img");
+        foto.src = id === "paneton-clasico"
+          ? "https://images.pexels.com/photos/29511942/pexels-photo-29511942.jpeg?auto=compress&cs=tinysrgb&w=300"
+          : id === "paneton-chocolate"
+            ? "https://images.pexels.com/photos/10530452/pexels-photo-10530452.jpeg?auto=compress&cs=tinysrgb&w=300"
+            : `imagenes/${fotos[id] || "pan-dia"}.webp`;
+        foto.alt = "";
+        foto.loading = "lazy";
+        const cantidadBadge = document.createElement("span");
+        cantidadBadge.className = "surtido-cantidad";
+        cantidadBadge.textContent = String(cantidad);
+        circulo.append(foto, cantidadBadge);
+        const nombre = document.createElement("span");
+        nombre.className = "surtido-nombre";
+        nombre.textContent = p.nombre;
+        grupo.append(circulo, nombre);
+        circulos.append(grupo);
+        productosDibujados++;
       });
-      if (!dibujados) {
+      if (!productosDibujados) {
         const vacio = document.createElement("span");
         vacio.className = "circulos-vacios";
-        vacio.textContent = "Tu bandeja está vacía";
+        vacio.textContent = "Tu surtido aparecerá aquí cuando agregues productos.";
         circulos.append(vacio);
-      }
-      if (Object.values(seleccion).reduce((n, x) => n + Number(x || 0), 0) > 36) {
-        const extra = document.createElement("span");
-        extra.className = "circulos-extra";
-        extra.textContent = `+${Object.values(seleccion).reduce((n, x) => n + Number(x || 0), 0) - 36} unidades`;
-        circulos.append(extra);
       }
     }
     const resumen = document.querySelector("#resumen-bandeja-formulario");
@@ -260,18 +128,45 @@ renderTablero();
     const unidades = Object.values(seleccion).reduce((s, n) => s + (Number(n) || 0), 0);
     const contador = document.querySelector("#contador-canasta");
     if (contador) contador.textContent = `${unidades} ${unidades === 1 ? "producto" : "productos"} en tu canasta`;
+    if (badgePanFlotante) {
+      badgePanFlotante.hidden = unidades === 0;
+      badgePanFlotante.textContent = `${unidades}`;
+    }
+    if (burbujaTexto && !ultimoAgregado) {
+      if (unidades > 0) {
+        burbujaTexto.innerHTML = `<strong>¡Tienes ${unidades} ${unidades === 1 ? "pan" : "panes"} en tu bandeja!</strong><br>Total estimado: <b>${precio(total)}</b>. ¿Confirmamos tu pedido?`;
+      } else {
+        burbujaTexto.innerHTML = `<strong>¡Recién salido del horno! 🥖</strong><br>Arma tu pedido en la bandeja o escríbenos directo.`;
+      }
+    }
+    if (linkWhatsapp) {
+      const detalle = Object.entries(seleccion)
+        .map(([id, n]) => {
+          const p = productos.find(x => x.id === id);
+          return p && Number(n) > 0 ? `- ${n}x ${p.nombre} (${precio(p.precio * Number(n))})` : "";
+        })
+        .filter(Boolean)
+        .join("\n");
+      const textoWa = detalle
+        ? `Hola Panadería Largucho, vengo de su web y quiero hacer este pedido:\n${detalle}\nTotal: ${precio(total)}`
+        : "Hola Panadería Largucho, vengo de su web y quiero consultar / hacer un pedido de pan artesanal";
+      linkWhatsapp.href = `https://wa.me/59171575507?text=${encodeURIComponent(textoWa)}`;
+    }
     ultimoAgregado = "";
     try { localStorage.setItem(CLAVE_SELECCION,JSON.stringify(seleccion)); } catch {}
   }
   productos.forEach(p => {
+    if (p.temporada) return; // Los panetones se agregan desde su sección especial.
     const tarjeta = document.createElement("div"); tarjeta.className = "producto-arrastrable"; tarjeta.draggable = Boolean(p.disponible && p.stock > 0);
     tarjeta.dataset.productoId = p.id;
-    const titulo = document.createElement("span"); titulo.textContent = `${p.nombre} · ${precio(p.precio)}${!p.disponible || p.stock <= 0 ? " (agotado)" : ""}`;
+    const fotos = {"pan-dia":"pan-dia","marraqueta":"marraqueta","sarnita":"sarnita","empanada-royal":"empanada-royal","bizcocho":"bizcocho","empanada-queso":"empanada-queso","chamillo":"chamillo","cuernitos":"cuernitos","paneton-clasico":"paneton-clasico","paneton-chocolate":"paneton-chocolate"};
+    const miniatura = document.createElement("img"); miniatura.className = "producto-miniatura"; miniatura.src = p.temporada ? `imagenes/${p.id}.svg` : `imagenes/${fotos[p.id] || "pan-dia"}.webp`; miniatura.alt = ""; miniatura.loading = "lazy";
+    const titulo = document.createElement("span"); titulo.className = "producto-nombre"; titulo.textContent = `${p.nombre} · ${precio(p.precio)}${!p.disponible || p.stock <= 0 ? " (agotado)" : ""}`;
     const boton = document.createElement("button"); boton.type = "button"; boton.textContent = "Agregar +"; boton.className = "boton secundario"; boton.disabled = !p.disponible || p.stock <= 0;
     boton.addEventListener("click", () => agregar(p.id));
     tarjeta.addEventListener("dragstart", e => { e.dataTransfer.setData("application/x-largucho-producto",p.id); e.dataTransfer.setData("text/plain",p.id); e.dataTransfer.effectAllowed="copy"; tarjeta.classList.add("arrastrando"); });
     tarjeta.addEventListener("dragend", () => { tarjeta.classList.remove("arrastrando"); destino.classList.remove("encima"); });
-    tarjeta.append(titulo,boton); catalogo.append(tarjeta);
+    tarjeta.append(miniatura,titulo,boton); catalogo.append(tarjeta);
   });
   const catalogoPrincipal = document.querySelector("#lista-productos");
   catalogoPrincipal?.addEventListener("click", e => {
@@ -279,6 +174,12 @@ renderTablero();
     if (!boton) return;
     const tarjeta = boton.closest("[data-producto-id]");
     if (tarjeta) agregar(tarjeta.dataset.productoId);
+  });
+  document.querySelector("#productos-temporada")?.addEventListener("click", e => {
+    const boton = e.target.closest(".agregar-temporada");
+    if (!boton) return;
+    const id = boton.dataset.productoId || boton.closest("[data-producto-id]")?.dataset.productoId;
+    if (id) agregar(id);
   });
   catalogoPrincipal?.addEventListener("dragstart", e => {
     const tarjeta = e.target.closest(".tarjeta[data-producto-id]");
@@ -302,5 +203,24 @@ renderTablero();
   destino.addEventListener("dragleave", e => { if (!destino.contains(e.relatedTarget)) destino.classList.remove("encima"); });
   destino.addEventListener("drop", e => { const id=e.dataTransfer.getData("application/x-largucho-producto") || e.dataTransfer.getData("text/plain"); if (!id) return; e.preventDefault(); e.stopPropagation(); destino.classList.remove("encima"); agregar(id); });
   window.addEventListener("largucho-bandeja-vaciada", () => { seleccion = {}; pintar(); });
+  widgetPan?.addEventListener("mouseleave", () => {
+    widgetPan.classList.remove("burbuja-visible");
+  });
+  botonPanFlotante?.addEventListener("click", () => {
+    animarPanFlotante();
+    const form = document.querySelector("#form-pedido");
+    if (form) {
+      form.classList.add("resaltado-pedido");
+      window.setTimeout(() => form.classList.remove("resaltado-pedido"), 1400);
+    }
+  });
+  document.querySelector("#pan-burbuja-cerrar")?.addEventListener("click", e => {
+    e.stopPropagation();
+    widgetPan?.classList.remove("burbuja-visible");
+  });
+  document.querySelector("#pan-ir-pedido")?.addEventListener("click", () => {
+    widgetPan?.classList.remove("burbuja-visible");
+    animarPanFlotante();
+  });
   pintar();
 })();

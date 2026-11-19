@@ -14,7 +14,7 @@ ARCHIVOS
 - remoto.js: demostración Fetch y jQuery AJAX.
 - datos.json: catálogo para las demostraciones de Fetch y $.getJSON.
 - jquery-3.7.1.min.js: debes copiar aquí la biblioteca jQuery 3.7.1 descargada previamente.
-- logo.png y panadero.jpg.jpeg: tus imágenes locales (opcionales).
+- imagenes/: carpeta con todas las imágenes del proyecto (logo.png, panadero.jpg, portada-pan.webp, productos .webp y capturas .png).
 
 IMPORTANTE SOBRE JQUERY
 Este ZIP no incluye la biblioteca jquery-3.7.1.min.js porque no se proporcionó el archivo original.
@@ -23,7 +23,7 @@ Puedes abrir la página principal sin esa biblioteca, pero las funciones jQuery 
 
 CÓMO PROBAR LA PÁGINA PRINCIPAL SIN INTERNET
 1. Coloca todos los archivos en una sola carpeta.
-2. Copia las imágenes logo.png y panadero.jpg.jpeg si las tienes.
+2. Verifica que la carpeta imagenes/ contenga logo.png, panadero.jpg y las imágenes de productos.
 3. Para la página y los productos locales, abre index.html con doble clic.
 4. Los pedidos se guardan en localStorage de ese navegador/equipo. No se envían a ningún negocio ni a Internet.
 
@@ -42,3 +42,9 @@ El formulario guarda pedidos solo en el navegador local. Para enviar pedidos aut
 
 DATOS
 Revisa los precios, el stock, horarios, dirección y teléfono antes de publicar el sitio.
+
+
+ACTUALIZACION VISUAL 2026-11-03
+- Fotografias de producto creadas para esta version y recortadas en archivos WebP individuales.
+- En "Tu surtido" se muestra un circulo fotografico por tipo de producto y un contador de unidades.
+- Se conservaron las secciones y la logica de pedidos existentes.

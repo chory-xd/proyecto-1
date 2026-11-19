@@ -10,9 +10,33 @@ function crearTarjeta(producto) {
   articulo.draggable = Boolean(producto.disponible && producto.stock > 0);
   articulo.dataset.categoria = producto.categoria;
 
+  const imagen = document.createElement("img");
+  const imagenesProducto = {
+    "pan-dia": "imagenes/pan-dia.webp",
+    "marraqueta": "imagen/marraqueta.jpg",
+    "sarnita": "imagen/sarnita.jpg",
+    "empanada-royal": "imagen/empanada-royal.jpg",
+    "bizcocho": "imagen/bizcocho.jpg",
+    "empanada-queso": "imagen/empanada-queso.jpg",
+    "chamillo": "imagen/chamillo.jpg",
+    "cuernitos": "imagen/cuernitos.jpg"
+  };
+  imagen.className = "tarjeta-imagen";
+  imagen.src = imagenesProducto[producto.id] || "imagenes/pan-dia.webp";
+  imagen.alt = producto.nombre;
+  imagen.loading = "lazy";
+  imagen.onerror = () => { imagen.src = "imagenes/pan-dia.webp"; };
+
   const categoria = document.createElement("span");
   categoria.className = "categoria";
   categoria.textContent = producto.categoria === "panes" ? "Pan" : "Masita";
+  const insignia = document.createElement("span");
+  insignia.className = "insignia-producto";
+  insignia.textContent = producto.id === "pan-dia" ? "✦ Pan del día" :
+    (producto.disponible && producto.stock > 0 ? "Disponible hoy" : "Próximamente");
+  insignia.setAttribute("aria-label", producto.id === "pan-dia" ? "Producto destacado: pan del día" :
+    (producto.disponible && producto.stock > 0 ? "Producto disponible" : "Producto agotado"));
+
   const titulo = document.createElement("h3");
   titulo.textContent = producto.nombre;
   const precio = document.createElement("p");
@@ -28,7 +52,7 @@ function crearTarjeta(producto) {
   agregar.textContent = producto.disponible && producto.stock > 0 ? "Agregar +" : "Agotado";
   agregar.disabled = !producto.disponible || producto.stock <= 0;
   agregar.setAttribute("aria-label", `Agregar ${producto.nombre} a la bandeja`);
-  articulo.append(categoria, titulo, precio, stock, agregar);
+  articulo.append(imagen, categoria, insignia, titulo, precio, stock, agregar);
   return articulo;
 }
 
@@ -45,4 +69,4 @@ function render(lista, destino = contenedor) {
   lista.forEach(producto => destino.append(crearTarjeta(producto)));
 }
 
-if (contenedor && Array.isArray(productos)) render(productos);
+if (contenedor && Array.isArray(productos)) render(productos.filter(producto => !producto.temporada));

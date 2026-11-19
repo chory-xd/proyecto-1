@@ -9,25 +9,28 @@
 </head>
 <body>
   <header class="encabezado">
-    <div class="header-left">
+    <div class="header-left" aria-hidden="true"></div>
+    <div class="header-center">
       <p class="sobrelinea">PAN ARTESANAL · DESDE 2018</p>
       <h1>Panadería <span>Largucho</span></h1>
       <p class="subtitulo">Recién horneado, hecho con cariño.</p>
       <button id="menu-toggle" class="menu-toggle" type="button" aria-controls="menu-movil" aria-expanded="false">☰ Menú</button>
       <nav id="menu-movil" aria-label="Menú principal">
+        <a href="#temporada">De temporada</a>
         <a href="#productos">Productos</a>
         <a href="#horarios">Horarios</a>
+        <a href="#ubicacion">Ubicación</a>
         <a href="#pedido">Hacer pedido</a>
         <a href="#contacto">Contacto</a>
       </nav>
     </div>
     <div class="header-right">
-      <img src="logo.png" alt="Logo de Panadería Largucho" class="logo" onerror="this.style.display='none'">
       <button id="tema-toggle" type="button" class="boton secundario tema-boton" aria-pressed="false">🌙 Modo oscuro</button>
     </div>
   </header>
 
   <main>
+    <div class="bienvenida-layout">
     <section class="bienvenida">
       <div>
         <p class="etiqueta">Sabor tradicional</p>
@@ -35,8 +38,56 @@
         <p>Conoce nuestros panes y masitas artesanales. Consulta disponibilidad y prepara tu pedido fácilmente.</p>
         <a class="boton-enlace" href="#productos">Ver productos</a>
       </div>
-      <div class="bienvenida-icono" aria-hidden="true">🥖</div>
+      <div class="bienvenida-foto"><img src="imagenes/portada-pan.webp" alt="Variedad de panes artesanales recién horneados" width="640" height="360" fetchpriority="high" decoding="async"></div>
     </section>
+    <div class="bienvenida-lateral">
+    <aside class="sabias">
+      <p class="sobrelinea">HECHO CON CARIÑO</p><h2>¿Sabías que…?</h2>
+      <p>Nuestros productos son artesanales. En Panadería Largucho trabajamos para ofrecer pan fresco y de calidad.</p>
+      <div id="acordeon" class="acordeon">
+        <button class="titulo" type="button" aria-expanded="false">¿Cómo conservar el pan?</button>
+        <div class="cuerpo" hidden><p>Guárdalo en una bolsa limpia, en un lugar fresco y seco. Para conservarlo más tiempo, puedes congelarlo bien cerrado.</p></div>
+        <button class="titulo" type="button" aria-expanded="false">¿Puedo pedir por mayor?</button>
+        <div class="cuerpo" hidden><p>Sí. Indica la cantidad y coordina la disponibilidad y la hora de entrega por teléfono.</p></div>
+      </div>
+    </aside>
+    <section id="ubicacion" class="ubicacion-panel ubicacion-destacada" aria-labelledby="ubicacion-titulo">
+      <div class="ubicacion-icono" aria-hidden="true">📍</div>
+      <div class="ubicacion-contenido">
+        <p class="sobrelinea">ENCUÉNTRANOS EN COLQUENCHA</p>
+        <h2 id="ubicacion-titulo">¿A qué distancia estás de Panadería Largucho?</h2>
+        <p>Calcula la distancia aproximada desde tu ubicación y encuentra rápidamente cómo llegar a nuestra panadería.</p>
+        <div class="ubicacion-acciones">
+          <button id="ubicarme" type="button" class="boton principal">Calcular mi distancia</button>
+          <a id="abrir-maps" class="boton secundario" href="https://maps.app.goo.gl/rDSYWzYoJQJPb5X76" target="_blank" rel="noopener noreferrer">📍 Abrir ubicación en Google Maps</a>
+        </div>
+        <p id="estado-ubicacion" role="status" aria-live="polite"></p>
+        <small>La distancia se calcula en línea recta y puede diferir de la ruta por carretera.</small>
+      </div>
+    </section>
+    </div>
+    </div>
+
+
+
+      <section id="temporada" class="temporada-section" aria-labelledby="temporada-titulo">
+        <div class="titulo-seccion temporada-cabecera">
+          <div><p class="sobrelinea">EDICIÓN ESPECIAL</p><h2 id="temporada-titulo">Sabores de temporada</h2></div>
+          <span class="temporada-sello">🎄 Especial de temporada</span>
+        </div>
+        <p class="temporada-intro">Dos opciones para compartir en familia: el sabor tradicional del panetón clásico y la versión irresistible con chocolate.</p>
+        <div class="temporada-grid" id="productos-temporada">
+          <article class="temporada-card" data-producto-id="paneton-clasico">
+            <div class="temporada-imagen-wrap"><img src="https://images.pexels.com/photos/29511942/pexels-photo-29511942.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1000" alt="Panetón clásico de temporada" class="temporada-imagen" loading="lazy" onerror="this.onerror=null;this.src='imagenes/paneton-clasico.svg'"><span class="temporada-etiqueta">Tradicional</span><span class="temporada-logo-marca"><img src="imagenes/logo.png" alt="Logo Panadería Largucho"></span></div>
+            <div class="temporada-detalle"><p class="temporada-kicker">RECETA CLÁSICA</p><h3>Panetón clásico</h3><p>Suave, esponjoso y con el sabor de siempre, ideal para compartir en familia.</p><div class="temporada-compra"><strong class="temporada-precio">Bs 45</strong><button type="button" class="boton principal agregar-temporada" data-producto-id="paneton-clasico">Agregar al pedido +</button></div></div>
+          </article>
+          <article class="temporada-card temporada-chocolate" data-producto-id="paneton-chocolate">
+            <div class="temporada-imagen-wrap"><img src="https://images.pexels.com/photos/10530452/pexels-photo-10530452.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1000" alt="Panetón de chocolate de temporada" class="temporada-imagen" loading="lazy" onerror="this.onerror=null;this.src='imagenes/paneton-chocolate.svg'"><span class="temporada-etiqueta">Favorito chocolatero</span><span class="temporada-logo-marca"><img src="imagenes/logo.png" alt="Logo Panadería Largucho"></span></div>
+            <div class="temporada-detalle"><p class="temporada-kicker">TOQUE DE CHOCOLATE</p><h3>Panetón de chocolate</h3><p>Una versión especial con intenso sabor a chocolate para los amantes del cacao.</p><div class="temporada-compra"><strong class="temporada-precio">Bs 55</strong><button type="button" class="boton principal agregar-temporada" data-producto-id="paneton-chocolate">Agregar al pedido +</button></div></div>
+          </article>
+        </div>
+        <p class="temporada-nota">Producto de temporada. Consulta disponibilidad y coordina tu entrega al realizar el pedido.</p>
+      </section>
 
     <section id="productos">
       <div class="titulo-seccion">
@@ -62,6 +113,8 @@
       </div>
       <div id="lista-productos" class="productos-grid" aria-live="polite"></div>
       <p class="nota-local">Los productos y precios se consultan desde los archivos de este proyecto.</p>
+
+
       <div class="pedido-tablero" id="pedido-tablero">
         <div class="pedido-tablero-intro">
           <h3>Arma tu pedido</h3>
@@ -82,7 +135,7 @@
         </div>
         <div class="bandeja-galletas-wrap">
           <h3>Tu surtido</h3>
-          <p class="nota-local">Cada círculo representa una unidad seleccionada.</p>
+          <p class="nota-local">Cada círculo identifica un producto y muestra cuántas unidades agregaste.</p>
           <div id="bandeja-circulos" class="bandeja-circulos" aria-label="Representación visual de los productos seleccionados"></div>
         </div>
         <div class="acciones-bandeja">
@@ -93,52 +146,48 @@
       </div>
     </section>
 
-    <section id="horarios">
-      <div class="titulo-seccion"><div><p class="sobrelinea">TE ESPERAMOS</p><h2>Horarios y precios</h2></div></div>
-      <p class="texto-intro">Atención de domingo a viernes, de 16:00 a 18:00.</p>
-      <div class="tabla-contenedor" role="region" aria-label="Tabla de precios" tabindex="0">
-        <table>
-          <caption>Precios referenciales y disponibilidad</caption>
-          <thead><tr><th>Producto</th><th>Precio</th><th>Disponibilidad</th></tr></thead>
-          <tbody id="tabla-precios">
-            <tr><td>Pan del día</td><td>Bs 0,80</td><td>Consultar</td></tr>
-            <tr><td>Empanada de royal</td><td>Bs 1,50</td><td>Consultar</td></tr>
-            <tr><td>Horneaje de carnes</td><td>Bs 20,00</td><td>Con aviso anticipado</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <figure class="foto-pan">
-        <img src="panadero.jpg.jpeg" alt="Horno de la Panadería Largucho" loading="lazy" onerror="this.closest('figure').classList.add('sin-imagen')">
-        <figcaption>Pan fresco y artesanal, preparado con dedicación.</figcaption>
-      </figure>
-    </section>
+    <div class="informacion-lateral-grid">
+      <section id="horarios" class="horario-card">
+        <div class="titulo-seccion"><div><p class="sobrelinea">TE ESPERAMOS</p><h2>Horario de atención</h2></div></div>
+        <p id="estado-horario" class="estado-horario" role="status" aria-live="polite">Consultando horario…</p>
+        <div class="turnos-horario">
+          <article class="turno-horario">
+            <span class="turno-icono" aria-hidden="true">☀️</span>
+            <div><h3>Turno mañana</h3><p>Domingos a viernes</p><strong>07:00 a 09:00</strong></div>
+          </article>
+          <article class="turno-horario">
+            <span class="turno-icono" aria-hidden="true">🌙</span>
+            <div><h3>Turno tarde</h3><p>Domingos a viernes</p><strong>16:00 a 18:00</strong></div>
+          </article>
+        </div>
+      </section>
+      <section class="panadero-historia" aria-labelledby="historia-panadero-titulo">
+        <figure class="foto-pan">
+          <img src="imagenes/panadero.jpg" alt="Maestro panadero de Panadería Largucho preparando pan artesanal en Colquencha" width="620" height="620" loading="lazy" decoding="async" onerror="this.closest('figure').classList.add('sin-imagen')">
+          <figcaption>El trabajo y la dedicación detrás de cada horneada.</figcaption>
+        </figure>
+        <article class="historia-panadero">
+          <p class="sobrelinea">TRADICIÓN QUE SE COMPARTE</p>
+          <h3 id="historia-panadero-titulo">Día del Panadero</h3>
+          <p>Celebramos a quienes comienzan su jornada antes del amanecer y convierten ingredientes sencillos en pan fresco para nuestras familias. Su esfuerzo, experiencia y dedicación mantienen viva esta tradición.</p>
+          <p>En Panadería Largucho reconocemos con orgullo este oficio y el cariño que hay detrás de cada horneada.</p>
+        </article>
+      </section>
+    </div>
 
-    <section id="tablero" class="tablero-seccion" aria-labelledby="titulo-tablero">
-      <div class="titulo-seccion"><div><p class="sobrelinea">ORGANIZACIÓN</p><h2 id="titulo-tablero">Tablero de producción</h2></div></div>
-      <p class="texto-intro">Organiza tus productos entre Hornear, Reponer y Pausa. Arrastra las tarjetas entre columnas o usa el selector de cada tarjeta desde tu celular.</p>
-      <div class="tablero-columnas">
-        <div class="columna" data-columna="hornear"><h3>🔥 Hornear</h3><ul class="lista-columna"></ul><p class="total"></p></div>
-        <div class="columna" data-columna="reponer"><h3>📦 Reponer</h3><ul class="lista-columna"></ul><p class="total"></p></div>
-        <div class="columna" data-columna="pausa"><h3>⏸️ Pausa</h3><ul class="lista-columna"></ul><p class="total"></p></div>
-      </div>
-      <h3>Resumen de unidades</h3><div class="grafico-contenedor"><canvas id="grafico" width="580" height="260" role="img" aria-label="Gráfico de unidades por estado"></canvas></div>
-    </section>
+
 
     <section id="pedido">
-      <div class="titulo-seccion"><div><p class="sobrelinea">FÁCIL Y RÁPIDO</p><h2>Hacer un pedido</h2></div></div>
+      <div class="titulo-seccion"><div><p class="sobrelinea">FÁCIL Y RÁPIDO</p><h2>Finalizar pedido</h2></div></div>
       <p class="texto-intro">Completa tus datos. El pedido se guardará en este navegador; luego podrás copiarlo para enviarlo por teléfono o mensajería.</p>
       <form id="form-pedido">
+        <div class="formulario-dos-columnas">
         <fieldset><legend>Tus datos</legend>
           <div class="campo"><label for="nombre">Nombre completo</label><input type="text" id="nombre" name="nombre" autocomplete="name" required minlength="2" placeholder="Tu nombre"></div>
           <div class="campo"><label for="email">Correo electrónico (opcional)</label><input type="email" id="email" name="email" autocomplete="email" placeholder="tunombre@correo.com"></div>
           <div class="campo"><label for="telefono">Teléfono</label><input type="tel" id="telefono" name="telefono" autocomplete="tel" inputmode="numeric" pattern="[0-9]{7,8}" title="Ingresa 7 u 8 dígitos, sin espacios" required placeholder="Ej. 71575507"></div>
         </fieldset>
-        <div id="resumen-bandeja-formulario" class="resumen-bandeja-formulario" hidden>
-          <h3>Productos de tu bandeja</h3>
-          <ul id="productos-elegidos-formulario"></ul>
-          <p><strong id="total-elegido-formulario">Total: Bs 0,00</strong></p>
-          <p class="nota-local">Estos productos se incluirán juntos en tu pedido.</p>
-        </div>
+        
         <fieldset><legend>Detalle del pedido</legend>
           <div class="campo"><label for="producto">Producto</label><select id="producto" name="producto"><option value="">Selecciona un producto</option></select></div>
           <div class="campo"><label for="cantidad">Cantidad</label><input type="number" id="cantidad" name="cantidad" min="1" max="100" value="1"></div>
@@ -147,7 +196,14 @@
           <div class="resumen-pedido"><span>Total estimado</span><strong id="total-pedido">Bs 0,00</strong></div>
           <div class="campo-checkbox"><input type="checkbox" id="terminos" name="terminos" required><label for="terminos">Acepto que el pedido debe confirmarse por teléfono.</label></div>
         </fieldset>
-        <button class="boton principal" type="submit">Guardar pedido</button> <button class="boton secundario" type="button" id="guardar-seleccion">Guardar productos seleccionados del tablero</button>
+        <div id="resumen-bandeja-formulario" class="resumen-bandeja-formulario" hidden>
+          <h3>Productos de tu bandeja</h3>
+          <ul id="productos-elegidos-formulario"></ul>
+          <p><strong id="total-elegido-formulario">Total: Bs 0,00</strong></p>
+          <p class="nota-local">Estos productos se incluirán juntos en tu pedido.</p>
+        </div>
+        </div>
+        <button class="boton principal boton-finalizar-pedido" type="submit">Finalizar pedido</button>
         <p id="mensaje-pedido" class="mensaje" role="status" aria-live="polite"></p>
       </form>
       <div class="pedidos-guardados">
@@ -163,32 +219,70 @@
       </div>
     </section>
 
-    <section class="ubicacion-panel" aria-labelledby="ubicacion-titulo">
-      <h2 id="ubicacion-titulo">¿A qué distancia estás de Panadería Largucho?</h2>
-      <p>Consulta a cuántos metros o kilómetros te encuentras de Panadería Largucho. La distancia es aproximada y en línea recta. Para ver cómo llegar, abre Google Maps.</p>
-      <button id="ubicarme" type="button" class="boton secundario">Calcular distancia a la panadería</button>
-      <p id="estado-ubicacion" role="status" aria-live="polite"></p>
-      <a id="abrir-maps" class="boton secundario" href="https://www.google.com/maps/search/?api=1&query=-16.9277998%2C-68.2477373" target="_blank" rel="noopener noreferrer">📍 Ir a Google Maps</a>
-    </section>
 
-    <aside class="sabias">
-      <p class="sobrelinea">HECHO CON CARIÑO</p><h2>¿Sabías que…?</h2>
-      <p>Nuestros productos son artesanales. En Panadería Largucho trabajamos para ofrecer pan fresco y de calidad.</p>
-      <div id="acordeon" class="acordeon">
-        <button class="titulo" type="button" aria-expanded="false">¿Cómo conservar el pan?</button>
-        <div class="cuerpo" hidden><p>Guárdalo en una bolsa limpia, en un lugar fresco y seco. Para conservarlo más tiempo, puedes congelarlo bien cerrado.</p></div>
-        <button class="titulo" type="button" aria-expanded="false">¿Puedo pedir por mayor?</button>
-        <div class="cuerpo" hidden><p>Sí. Indica la cantidad y coordina la disponibilidad y la hora de entrega por teléfono.</p></div>
-      </div>
-    </aside>
+
+
 
 
   </main>
 
   <footer id="contacto">
-    <div><p class="sobrelinea">VISÍTANOS</p><h2>Panadería Largucho</h2><address>Camino a Viacha<br>Provincia Aroma, Colquencha<br>Teléfono: <a href="tel:+59171575507">71575507</a></address></div>
+    <div class="visitanos-contenido"><p class="sobrelinea">VISÍTANOS</p><h2>Panadería Largucho</h2><address>Camino a Viacha<br>Provincia Aroma, Colquencha<br>Teléfono: <a href="tel:+59171575507">71575507</a></address></div>
     <p class="copyright">© 2026 Panadería Largucho. Todos los derechos reservados.</p>
   </footer>
+
+  <!-- Botón flotante interactivo con pan animado -->
+  <div id="pan-flotante-widget" class="pan-flotante-widget" aria-live="polite">
+    <div id="pan-burbuja" class="pan-burbuja" role="dialog" aria-label="Opciones rápidas de pedido">
+      <button type="button" id="pan-burbuja-cerrar" class="pan-burbuja-cerrar" aria-label="Cerrar mensaje">×</button>
+      <p id="pan-burbuja-texto" class="pan-burbuja-texto"><strong>¡Recién salido del horno!</strong><br>Arma tu canasta o envíanos tu pedido directamente.</p>
+      <div class="pan-burbuja-acciones">
+        <a href="#pedido" id="pan-ir-pedido" class="pan-accion-btn principal">🥖 Ir a mi pedido</a>
+        <a href="https://wa.me/59171575507?text=Hola%20Panader%C3%ADa%20Largucho%2C%20vengo%20de%20su%20web%20y%20quiero%20hacer%20un%20pedido%20de%20pan%20artesanal" id="pan-whatsapp" class="pan-accion-btn whatsapp" target="_blank" rel="noopener noreferrer">💬 Pedir por WhatsApp</a>
+      </div>
+    </div>
+
+    <a href="#pedido" id="boton-pan-flotante" class="boton-pan-flotante" aria-label="Haz tu pedido de pan recién horneado">
+      <span class="pan-particulas" aria-hidden="true">
+        <i class="miga miga-1">✦</i>
+        <i class="miga miga-2">•</i>
+        <i class="miga miga-3">✦</i>
+      </span>
+      <span class="pan-icono-wrap" aria-hidden="true">
+        <svg class="pan-svg" viewBox="0 0 64 64" width="42" height="42" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Vapor animado del pan caliente -->
+          <path class="vapor vapor-1" d="M22 14 C20 10, 25 8, 23 4" stroke="#FFF3DF" stroke-width="2.4" stroke-linecap="round"/>
+          <path class="vapor vapor-2" d="M32 12 C30 8, 35 6, 33 2" stroke="#FFF3DF" stroke-width="2.4" stroke-linecap="round"/>
+          <path class="vapor vapor-3" d="M42 14 C40 10, 45 8, 43 4" stroke="#FFF3DF" stroke-width="2.4" stroke-linecap="round"/>
+          <!-- Cuerpo del pan (Marraqueta dorada) -->
+          <g class="pan-cuerpo">
+            <ellipse cx="32" cy="40" rx="25" ry="16" fill="#C85A14"/>
+            <ellipse cx="32" cy="38" rx="24" ry="15" fill="#F29F38"/>
+            <path d="M12 36 C16 24, 48 24, 52 36 C49 29, 15 29, 12 36 Z" fill="#FFD07B" opacity="0.65"/>
+            <!-- Cortes característicos del pan artesanal -->
+            <path d="M20 27 C25 31, 27 34, 24 37" stroke="#A84308" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M31 25 C36 29, 38 32, 35 35" stroke="#A84308" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M42 27 C46 31, 47 34, 44 37" stroke="#A84308" stroke-width="2.5" stroke-linecap="round"/>
+            <!-- Ojitos y sonrisa del pan animado -->
+            <g class="pan-carita">
+              <circle class="pan-ojo pan-ojo-izq" cx="24" cy="42" r="2.5" fill="#3D1606"/>
+              <circle class="pan-ojo pan-ojo-der" cx="40" cy="42" r="2.5" fill="#3D1606"/>
+              <circle cx="23.2" cy="41.2" r="0.9" fill="#FFFFFF"/>
+              <circle cx="39.2" cy="41.2" r="0.9" fill="#FFFFFF"/>
+              <ellipse cx="19" cy="45" rx="3" ry="1.6" fill="#E85D3F" opacity="0.65"/>
+              <ellipse cx="45" cy="45" rx="3" ry="1.6" fill="#E85D3F" opacity="0.65"/>
+              <path class="pan-boca" d="M28 44 Q32 48.5 36 44" stroke="#3D1606" stroke-width="2.3" stroke-linecap="round" fill="none"/>
+            </g>
+          </g>
+        </svg>
+      </span>
+      <span class="pan-flotante-texto">
+        <small class="pan-flotante-sub">¿Antojo de pan fresco?</small>
+        <strong>¡Haz tu pedido!</strong>
+      </span>
+      <span id="pan-flotante-badge" class="pan-flotante-badge" hidden>0</span>
+    </a>
+  </div>
 
   <!-- Carga local: jQuery debe ir antes de los archivos que usan $. -->
   <script src="jquery-3.7.1.min.js"></script>
@@ -202,5 +296,6 @@
   <script src="remoto.js"></script>
   <script src="preferencias.js"></script>
   <script src="tablero.js"></script>
+  <script src="horarios.js"></script>
 </body>
 </html>

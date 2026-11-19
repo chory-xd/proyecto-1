@@ -6,7 +6,7 @@ $(function () {
     $(this).attr("aria-expanded", String(!abierto));
   });
   $("#menu-movil a").on("click", function () {
-    if (window.matchMedia("(max-width: 600px)").matches) {
+    if (window.matchMedia("(max-width: 700px)").matches) {
       $("#menu-movil").slideUp(150).removeClass("abierto");
       $("#menu-toggle").attr("aria-expanded", "false");
     }

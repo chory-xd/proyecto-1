@@ -7,13 +7,14 @@ document.addEventListener("DOMContentLoaded", () => {
   let textoBuscado = "";
 
   function actualizar() {
-    const visibles = productos
+    const catalogoRegular = productos.filter(p => !p.temporada);
+    const visibles = catalogoRegular
       .filter(p => categoriaActiva === "todos" || p.categoria === categoriaActiva)
       .filter(p => p.nombre.toLocaleLowerCase("es").includes(textoBuscado.toLocaleLowerCase("es")));
     const orden = document.querySelector("#orden")?.value || "nombre";
     visibles.sort((a,b) => orden === "precio-asc" ? Number(a.precio)-Number(b.precio) : orden === "precio-desc" ? Number(b.precio)-Number(a.precio) : a.nombre.localeCompare(b.nombre, "es"));
     render(visibles);
-    if (resultado) resultado.textContent = `${visibles.length} de ${productos.length} productos`;
+    if (resultado) resultado.textContent = `${visibles.length} de ${catalogoRegular.length} productos`;
   }
   actualizar();
   document.addEventListener("largucho:orden", actualizar);
